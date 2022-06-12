@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button, Space } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import ThemSanPham from "./ThemSanPham";
 const dataSource = [
   {
     key: "1",
@@ -25,21 +26,21 @@ const columns = [
     dataIndex: "TenSanPham",
     key: "TenSanPham",
   },
-  // {
-  //   title: "Giá bán",
-  //   dataIndex: "GiaBan",
-  //   key: "GiaBan",
-  // },
-  // {
-  //   title: "Số lượng nhập",
-  //   dataIndex: "SoLuongNhap",
-  //   key: "SoLuongNhap",
-  // },
-  // {
-  //   title: "Số lượng bán",
-  //   dataIndex: "SoLuongBan",
-  //   key: "SoLuongBan",
-  // },
+  {
+    title: "Giá bán",
+    dataIndex: "GiaBan",
+    key: "GiaBan",
+  },
+  {
+    title: "Số lượng nhập",
+    dataIndex: "SoLuongNhap",
+    key: "SoLuongNhap",
+  },
+  {
+    title: "Số lượng bán",
+    dataIndex: "SoLuongBan",
+    key: "SoLuongBan",
+  },
   {
     title: "Action",
     key: "action",
@@ -56,10 +57,20 @@ const columns = [
   },
 ];
 const QuanTriSanPham = () => {
+  const [openModalAdd, setOpenModalAdd] = useState(false);
+  const handleOpenModalAdd = () => {
+    setOpenModalAdd(!openModalAdd);
+  };
+  const handleOnOkAdd = () => {
+    setOpenModalAdd(false);
+  };
   return (
     <div className="TrangSanPham">
-      <Button type="primary">Thêm sản phẩm</Button>
+      <Button type="primary" onClick={handleOpenModalAdd}>
+        Thêm sản phẩm
+      </Button>
       <Table dataSource={dataSource} columns={columns} />
+      <ThemSanPham visible={openModalAdd} onCancel={handleOnOkAdd} />
     </div>
   );
 };
