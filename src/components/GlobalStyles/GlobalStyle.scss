@@ -1,0 +1,50 @@
+@import 'normalize.css';
+@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap';
+
+$font_size_default:1.4rem;
+$line_height_default:1.8rem;
+$primary_color : black;
+$second_color:white;
+$radius_cornor :.4rem;
+*{
+    box-sizing: border-box ;
+}
+html
+{
+    font-size: 62.5%;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+    font-size: $font_size_default;
+    line-height: $line_height_default;
+    text-rendering: optimizeSpeed;
+}
+ul
+{
+    list-style: none;
+}
+a{
+}
+[data-theme="dark"] .ant-layout-header {
+    background: black;
+  }
+
+  [data-theme="dark"] .ant-layout-footer {
+    background: #00070c;
+  }
+  .Header
+  {
+    background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: $radius_cornor;
+  }
+  input{
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: .5rem;
+    border: none;
+  }
+  svg{
+    font-size: 2rem;
+  }

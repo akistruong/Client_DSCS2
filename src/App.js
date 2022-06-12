@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { adminRoute } from "~/area/admin/components/routes";
+import { publicRoute } from "~/components/routes";
+import { DefaultLayout, AdminLayout } from "~/components/layout";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route element={<h1>404 Not Fount</h1>} path={"*"}></Route>
+          {adminRoute.map((route, index) => {
+            const Page = route.element;
+            const Layout =
+              route.layout != undefined ? AdminLayout : DefaultLayout;
+            return (
+              <Route
+                key={index}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+                path={route.path}
+              ></Route>
+            );
+          })}
+          {publicRoute.map((route, index) => {
+            const Page = route.element;
+            const Layout = route.layout || DefaultLayout;
+            return (
+              <Route
+                key={index}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+                path={route.path}
+              ></Route>
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

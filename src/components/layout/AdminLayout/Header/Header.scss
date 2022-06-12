@@ -1,0 +1,12 @@
+.Header_Content
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .Search_Input
+    {
+        flex:1;
+       display: flex;
+       align-items: center;
+    }
+}
