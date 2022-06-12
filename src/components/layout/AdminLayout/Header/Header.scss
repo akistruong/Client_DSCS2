@@ -3,6 +3,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .SearchInput_Component
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex:1;
+    }
     .Search_Input
     {
         flex:1;

@@ -11,7 +11,12 @@ function ActionSideBar() {
     };
   }
   const items = [
-    getItem("Trang chính", "main", null, <DownOutlined />),
+    getItem(
+      <Link to={"/admin"}>Trang chính</Link>,
+      "main",
+      null,
+      <DownOutlined />
+    ),
     getItem("Quản lý sản phẩm", "sub1", [
       getItem(
         <Link to={"/admin/trang-quan-tri-san-pham"}> Sản phẩm</Link>,

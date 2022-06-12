@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.scss";
 import { SearchOutlined, SmileOutlined } from "@ant-design/icons";
-import { Avatar, Image, Menu, Dropdown } from "antd";
+import { Avatar, Image, Menu, Dropdown, Card } from "antd";
 
 const menu = (
   <Menu
@@ -61,9 +61,33 @@ const MyHeader = () => {
   };
   return (
     <div className="Header_Content">
-      <div className="Search_Input">
-        <SearchOutlined size={30} />
-        <input placeholder="Tìm kiếm tại đây" />
+      <div className="Search_Input" style={{ position: "relative" }}>
+        <div className="SearchInput_Component">
+          <SearchOutlined size={30} />
+          <input placeholder="Tìm kiếm tại đây" />
+        </div>
+        <div
+          className="SearchResult"
+          style={{
+            width: "100%",
+
+            position: "absolute",
+            left: 0,
+            top: "calc(100% + 2rem)",
+          }}
+        >
+          {/* <Card style={{ background: "#CDC2AE", borderRadius: ".4rem" }}>
+            <Card style={{ background: "#CDC2AE", borderRadius: ".4rem" }}>
+              <SmileOutlined />
+            </Card>
+            <Card style={{ background: "#CDC2AE", borderRadius: ".4rem" }}>
+              <SmileOutlined />
+            </Card>
+            <Card style={{ background: "#CDC2AE", borderRadius: ".4rem" }}>
+              <SmileOutlined />
+            </Card>
+          </Card> */}
+        </div>
       </div>
       <div className="user_profile">
         <Dropdown overlay={menu}>
