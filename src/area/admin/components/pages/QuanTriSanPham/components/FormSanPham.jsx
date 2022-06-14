@@ -3,7 +3,7 @@ import { Modal, Button, Checkbox, Form, Input,Select, InputNumber, Upload } from
 import {UploadOutlined} from "@ant-design/icons"
 const {Option} = Select;
 
-const ThemSanPham = ({ visible, onOK, onCancel }) => {
+const FormSanPham = ({initValues, visible, onOK, onCancel,isUpdateForm }) => {
   const [formBody,setFormBody] = useState({});
   console.log({formBody})
   const handleSubmit=(values)=>
@@ -19,7 +19,7 @@ const ThemSanPham = ({ visible, onOK, onCancel }) => {
       onCancel={onCancel}
     >
       <Form
-      initialValues={{MaSanPham:"SP01"}}
+      initialValues={initValues}
       onFinish={handleSubmit}
         name="basic"
         labelCol={{
@@ -130,4 +130,4 @@ const ThemSanPham = ({ visible, onOK, onCancel }) => {
   );
 };
 
-export default ThemSanPham;
+export default FormSanPham;
