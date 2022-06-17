@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -11,23 +11,57 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { Get, Post } from "~/area/admin/components/api/SanPham";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { Option } = Select;
 
-const FormSanPham = ({ init, visible, onOK, onCancel, isUpdateForm }) => {
+const ThemSanPham = ({
+  visible,
+  onOK,
+  onCancel,
+  setProducts,
+  list,
+  ModalState,
+}) => {
   const [formBody, setFormBody] = useState({});
-  console.log(init[0]);
+  const [bst, setBst] = useState([]);
+  const [cate, setCate] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const getBst = async () => {
+      const res = await Get("/api/admin/BoSuuTap");
+      setBst(res);
+    };
+    getBst();
+  }, []);
+  useEffect(() => {
+    const getDM = async () => {
+      const res = await Get("/api/admin/DanhMuc");
+      setCate(res);
+    };
+    getDM();
+  }, []);
+
   const handleSubmit = (values) => {
-    setFormBody({ fileData: values.file.file, ...values });
+    const postData = async () => {
+      setLoading(true);
+      var res = await Post("/api/admin/SanPham", values);
+      var temp = [];
+      setProducts([...list, { key: res.id, ...res }]);
+      setLoading(false);
+      ModalState(false);
+    };
+    postData();
   };
   return (
     <Modal
+      width={800}
       title="Thêm sản phẩm"
       visible={visible}
       onOk={onOK}
       onCancel={onCancel}
     >
       <Form
-        initialValues={init[0]}
         onFinish={handleSubmit}
         name="basic"
         labelCol={{
@@ -46,11 +80,11 @@ const FormSanPham = ({ init, visible, onOK, onCancel, isUpdateForm }) => {
           rules={[
             {
               required: true,
-              message: "Please input your username!",
+              message: "Hãy nhập trường này",
             },
           ]}
         >
-          <Input />
+          <Input placeholder="Mã sản phẩm" />
         </Form.Item>
 
         <Form.Item
@@ -76,7 +110,7 @@ const FormSanPham = ({ init, visible, onOK, onCancel, isUpdateForm }) => {
             },
           ]}
         >
-          <InputNumber />
+          <InputNumber placeholder="Số lượng" />
         </Form.Item>
         <Form.Item
           label="Số lượng nhập"
@@ -100,9 +134,14 @@ const FormSanPham = ({ init, visible, onOK, onCancel, isUpdateForm }) => {
             },
           ]}
         >
-          <Select placeholder="Chọn nhà sưu tập">
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+          <Select placeholder="Chọn bộ sưu tập">
+            {bst.map((item, index) => {
+              return (
+                <Option key={index} value={item.id}>
+                  {item.tenBoSuuTap}
+                </Option>
+              );
+            })}
           </Select>
         </Form.Item>
         <Form.Item
@@ -115,35 +154,35 @@ const FormSanPham = ({ init, visible, onOK, onCancel, isUpdateForm }) => {
             },
           ]}
         >
-          <Select placeholder="Chọn nhà sưu tập">
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+          <Select placeholder="Chọn tên danh mục">
+            {cate.map((item, index) => {
+              return (
+                <Option key={"DM" + index} value={item.id}>
+                  {item.tenDanhMuc}
+                </Option>
+              );
+            })}
           </Select>
         </Form.Item>
-        {isUpdateForm && (
-          <Form.Item label="Ảnh sản phẩm" name="file">
-            <Upload
-              name="file"
-              action={"https://localhost:44328/api/admin/SanPham/Upload-Single"}
-              onChange={(info) => console.log(info)}
-              onRemove={(e) => alert("Removed!")}
-            >
-              <Button icon={<UploadOutlined />}>Chọn ảnh tải lên</Button>
-            </Upload>
-          </Form.Item>
-        )}
+
+        <CKEditor
+          editor={ClassicEditor}
+          onChange={(e, editor) => console.log(e, editor.getData())}
+        />
 
         <Button
           block
           type="primary"
           htmlType="submit"
           style={{ display: "block" }}
+          onClick={handleSubmit}
+          loading={loading}
         >
-          Hoàn tất
+          Hoàn tất thêm
         </Button>
       </Form>
     </Modal>
   );
 };
 
-export default FormSanPham;
+export default ThemSanPham;

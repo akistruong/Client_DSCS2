@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Header.scss";
 import { SearchOutlined, SmileOutlined } from "@ant-design/icons";
 import { Avatar, Image, Menu, Dropdown, List } from "antd";
-import ThemSanPham from "~/area/admin/components/pages/QuanTriSanPham/ThemSanPham";
 const data = [
   {
     title: "Ant Design Title 1",
