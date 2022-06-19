@@ -8,6 +8,7 @@ import {
   Select,
   InputNumber,
   Upload,
+  
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { Get, Post } from "~/area/admin/components/api/SanPham";
@@ -27,6 +28,10 @@ const ThemSanPham = ({
   const [bst, setBst] = useState([]);
   const [cate, setCate] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm()
+  const isFormValid = ()=>{
+    return form.getFieldsError().some((item) => item.errors.length > 0)
+  }
   useEffect(() => {
     const getBst = async () => {
       const res = await Get("/api/admin/BoSuuTap");
@@ -43,6 +48,7 @@ const ThemSanPham = ({
   }, []);
 
   const handleSubmit = (values) => {
+   
     const postData = async () => {
       setLoading(true);
       var res = await Post("/api/admin/SanPham", values);
@@ -51,10 +57,14 @@ const ThemSanPham = ({
       setLoading(false);
       ModalState(false);
     };
-    postData();
+    if(!isFormValid())
+    {      
+      postData();
+    }
   };
   return (
     <Modal
+      
       width={800}
       title="Thêm sản phẩm"
       visible={visible}
@@ -62,6 +72,7 @@ const ThemSanPham = ({
       onCancel={onCancel}
     >
       <Form
+        form={form}
         onFinish={handleSubmit}
         name="basic"
         labelCol={{
@@ -165,10 +176,10 @@ const ThemSanPham = ({
           </Select>
         </Form.Item>
 
-        <CKEditor
+        {/* <CKEditor
           editor={ClassicEditor}
           onChange={(e, editor) => console.log(e, editor.getData())}
-        />
+        /> */}
 
         <Button
           block

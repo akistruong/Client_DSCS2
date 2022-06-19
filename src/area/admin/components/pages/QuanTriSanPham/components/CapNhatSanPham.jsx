@@ -14,7 +14,7 @@ import UploadSingleFile from "./UploadSingleFile";
 import UploadMutipleFile from "./UploadMutipleFile";
 import axios from "axios";
 import { UploadOutlined } from "@ant-design/icons";
-import { Get, Post, Delete } from "~/area/admin/components/api/SanPham";
+import { Get, Post, Delete,Put } from "~/area/admin/components/api/SanPham";
 import { useForm } from "antd/lib/form/Form";
 const { Option } = Select;
 document.title = "Trang cập nhật thông tin sản phẩm";
@@ -87,13 +87,13 @@ const CapNhatSanPham = ({
   useEffect(() => {
     const getDM = async () => {
       const res = await Get("/api/admin/DanhMuc");
-
       setCate(res);
     };
     getDM();
   }, []);
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit =async (values) => {
+    const res =await Put("/api/admin/SanPham/"+maSP,values)
+    console.log(res);
   };
   return (
     <div
