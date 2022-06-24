@@ -36,8 +36,7 @@ function UploadSingleFile({ maSP, fileInit, setFileInit, fieldValue }) {
           name: res.img,
           status: "done",
           // custom error message to show
-          url:
-            "https://localhost:44328/wwwroot/res/SanPhamRes/Thumb/" + res.img,
+          url: `https://localhost:44328/wwwroot/res/SanPhamRes/Thumb/${res.img.trim()}`,
         },
       ]);
       onSuccess("Ok");

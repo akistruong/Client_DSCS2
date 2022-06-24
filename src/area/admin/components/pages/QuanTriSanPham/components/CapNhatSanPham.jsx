@@ -9,14 +9,18 @@ import {
   Select,
   InputNumber,
   Upload,
+  Alert,
+  notification,
 } from "antd";
 import UploadSingleFile from "./UploadSingleFile";
 import UploadMutipleFile from "./UploadMutipleFile";
+import QuanLySoLuong from "./QuanLySoLuong";
 import axios from "axios";
-import { UploadOutlined } from "@ant-design/icons";
-import { Get, Post, Delete,Put } from "~/area/admin/components/api/SanPham";
+import { UploadOutlined, SmileOutlined } from "@ant-design/icons";
+import { Get, Post, Delete, Put } from "~/area/admin/components/api/SanPham";
 import { useForm } from "antd/lib/form/Form";
 const { Option } = Select;
+
 document.title = "Trang cập nhật thông tin sản phẩm";
 const CapNhatSanPham = ({
   visible,
@@ -33,7 +37,8 @@ const CapNhatSanPham = ({
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [mutipleFileInit, setMutipleFileInit] = useState([]);
-  console.log(mutipleFileInit);
+  const [sizes, setSize] = useState([]);
+  const [openModalQty, setOpenModalQty] = useState(false);
   let { maSP } = useParams();
   let [form] = useForm();
   useLayoutEffect(() => {
@@ -44,6 +49,7 @@ const CapNhatSanPham = ({
         IdBst: res.boSuuTap.key,
         ...res,
       });
+      setInit(res);
       if (res.img) {
         setFileList([
           {
@@ -76,7 +82,7 @@ const CapNhatSanPham = ({
       }
     };
     Fetch();
-  }, [init]);
+  }, []);
   useEffect(() => {
     const getBst = async () => {
       const res = await Get("/api/admin/BoSuuTap");
@@ -91,9 +97,23 @@ const CapNhatSanPham = ({
     };
     getDM();
   }, []);
-  const handleSubmit =async (values) => {
-    const res =await Put("/api/admin/SanPham/"+maSP,values)
-    console.log(res);
+  const handleSubmit = async (values) => {
+    const res = await Put("/api/admin/SanPham/" + maSP, values);
+    if (res.success) {
+      notification.open({
+        message: "Cập nhập thành công",
+        description: "Cập nhật thành công",
+        className: "alert-success",
+        icon: <SmileOutlined />,
+      });
+    } else {
+      notification.open({
+        message: "Cập nhập thất bại",
+        description: "Có lỗi xảy ra, vui lòng kiểm tra",
+        className: "alert-success",
+        icon: <SmileOutlined />,
+      });
+    }
   };
   return (
     <div
@@ -121,7 +141,6 @@ const CapNhatSanPham = ({
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        {console.log(init)},
         <Form.Item
           label="Mã sản phẩm"
           name="maSanPham"
@@ -160,7 +179,6 @@ const CapNhatSanPham = ({
         </Form.Item>
         <Form.Item
           label="Số lượng nhập"
-          name="soLuongNhap"
           rules={[
             {
               required: true,
@@ -168,7 +186,9 @@ const CapNhatSanPham = ({
             },
           ]}
         >
-          <InputNumber />
+          <Button type="primary" onClick={() => setOpenModalQty(true)}>
+            Quản lý số lượng nhập
+          </Button>
         </Form.Item>
         <Form.Item
           label="Tên bộ sưu tập"
@@ -237,6 +257,19 @@ const CapNhatSanPham = ({
           Hoàn tất cập nhật
         </Button>
       </Form>
+      <Modal
+        width={600}
+        cancelText="Hủy"
+        okButtonProps={{
+          hidden: true,
+        }}
+        title="Quản lý số lượng nhập"
+        visible={openModalQty}
+        onCancel={() => setOpenModalQty(false)}
+        onOk={() => setOpenModalQty(false)}
+      >
+        <QuanLySoLuong init={init.soLuong} maSanPham={maSP} />
+      </Modal>
     </div>
   );
 };

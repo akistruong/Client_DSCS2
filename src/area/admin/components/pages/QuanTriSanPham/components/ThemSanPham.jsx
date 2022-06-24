@@ -8,9 +8,13 @@ import {
   Select,
   InputNumber,
   Upload,
-  
+  notification,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  IssuesCloseOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 import { Get, Post } from "~/area/admin/components/api/SanPham";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -28,10 +32,10 @@ const ThemSanPham = ({
   const [bst, setBst] = useState([]);
   const [cate, setCate] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm()
-  const isFormValid = ()=>{
-    return form.getFieldsError().some((item) => item.errors.length > 0)
-  }
+  const [form] = Form.useForm();
+  const isFormValid = () => {
+    return form.getFieldsError().some((item) => item.errors.length > 0);
+  };
   useEffect(() => {
     const getBst = async () => {
       const res = await Get("/api/admin/BoSuuTap");
@@ -48,23 +52,43 @@ const ThemSanPham = ({
   }, []);
 
   const handleSubmit = (values) => {
-   
     const postData = async () => {
       setLoading(true);
-      var res = await Post("/api/admin/SanPham", values);
-      var temp = [];
-      setProducts([...list, { key: res.id, ...res }]);
+      try {
+        var res = await Post("/api/admin/SanPham", values);
+        setProducts([...list, { key: res.id, ...res }]);
+        ModalState(false);
+        setLoading(false);
+        notification.open({
+          message: "Thêm thành công",
+          description: "Thêm thành công",
+          className: "alert-success",
+          icon: <SmileOutlined />,
+        });
+      } catch (err) {
+        setLoading(false);
+        if (err.response.data) {
+          notification.open({
+            message: err.response.data.title,
+            description: err.response.data.message,
+            className: "alert-error",
+            icon: <IssuesCloseOutlined />,
+          });
+        } else {
+          notification.open({
+            message: "Có lỗi xảy ra, kiểm tra lại đường truyền",
+            type: "error",
+          });
+        }
+      }
       setLoading(false);
-      ModalState(false);
     };
-    if(!isFormValid())
-    {      
+    if (!isFormValid()) {
       postData();
     }
   };
   return (
     <Modal
-      
       width={800}
       title="Thêm sản phẩm"
       visible={visible}
@@ -72,6 +96,9 @@ const ThemSanPham = ({
       onCancel={onCancel}
     >
       <Form
+        defaultValue={{
+          IdSP: 1,
+        }}
         form={form}
         onFinish={handleSubmit}
         name="basic"
@@ -123,7 +150,7 @@ const ThemSanPham = ({
         >
           <InputNumber placeholder="Số lượng" />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Số lượng nhập"
           name="SoLuongNhap"
           rules={[
@@ -134,18 +161,12 @@ const ThemSanPham = ({
           ]}
         >
           <InputNumber />
-        </Form.Item>
-        <Form.Item
-          label="Tên bộ sưu tập"
-          name="IdBst"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn trường này",
-            },
-          ]}
-        >
+        </Form.Item> */}
+        <Form.Item label="Tên bộ sưu tập" name="IdBst">
           <Select placeholder="Chọn bộ sưu tập">
+            <Option key="none" value={null}>
+              Không thuộc bộ sưu tập nào
+            </Option>
             {bst.map((item, index) => {
               return (
                 <Option key={index} value={item.id}>

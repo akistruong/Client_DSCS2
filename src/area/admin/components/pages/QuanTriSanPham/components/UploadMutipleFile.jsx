@@ -34,15 +34,10 @@ function UploadMutipleFile({ maSP, fileInit, setFileInit }) {
             name: res.img,
             status: "done",
             // custom error message to show
-            url:
-              "https://localhost:44328/wwwroot/res/SanPhamRes/Imgs/" +
-              maSP +
-              "/" +
-              res.img,
+            url: `https://localhost:44328/wwwroot/res/SanPhamRes/Imgs/${maSP}/${res.img.trim()}`,
           },
         ];
       });
-      console.log("server res: ", res);
     } catch (err) {
       //   setFileInit([
       //     {
@@ -65,7 +60,6 @@ function UploadMutipleFile({ maSP, fileInit, setFileInit }) {
     //filelist - [{uid: "-1",url:'Some url to image'}]
   };
   const handleOnRemove = async (f) => {
-    console.log(f);
     try {
       const res = await Delete(
         `/api/admin/SanPham/Remove-Mutiple?fileName=${f.name}&_id=${maSP}`

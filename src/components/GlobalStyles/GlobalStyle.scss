@@ -12,13 +12,14 @@ $radius_cornor :.4rem;
 html
 {
     font-size: 62.5%;
+    user-select: none;
 }
 body{
     font-family: 'Roboto', sans-serif;
     font-size: $font_size_default;
     line-height: $line_height_default;
     text-rendering: optimizeSpeed;
-}
+  }
 ul
 {
     list-style: none;
@@ -55,3 +56,13 @@ a{
   {
     padding: 2rem 0;
   }
+.alert-success
+{
+  border:1px solid #b7eb8f;
+  background-color: #d6f6be;
+}
+.alert-error
+{
+  border:1px solid #ffccc7;
+  background-color: #fcaca5;
+}
