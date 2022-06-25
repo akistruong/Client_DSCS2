@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Method from "~/axiosRequest/request";
 import DanhMucSlice, {
-  fetCategoryGetById,
+  fetchCategoryGetById,
   fetchCategoryUpdate,
 } from "~/redux/slices/DanhMuc";
 import { useState } from "react";
@@ -16,7 +16,7 @@ function SuaDanhMuc() {
   const { maDM } = useParams();
   const [form] = useForm();
   const dispatch = useDispatch();
-  const item = useSelector((state) => state.DanhMuc.item);
+  const { item, loading } = useSelector((state) => state.DanhMuc);
   const [sexOptions, setSexOptions] = useState([]);
   useEffect(() => {
     form.setFieldsValue({
@@ -26,7 +26,7 @@ function SuaDanhMuc() {
     });
   }, [item]);
   useEffect(() => {
-    dispatch(fetCategoryGetById(maDM));
+    dispatch(fetchCategoryGetById(maDM));
 
     const Fetch = async () => {
       try {
@@ -57,7 +57,9 @@ function SuaDanhMuc() {
         <Form.Item label={"Độ tuổi và giới tính"} name={"GioiTinhCode"}>
           <Select options={sexOptions}></Select>
         </Form.Item>
-        <Button htmlType="submit">SUBMIT</Button>
+        <Button htmlType="submit" loading={loading}>
+          Xác nhận
+        </Button>
       </Form>
     </>
   );

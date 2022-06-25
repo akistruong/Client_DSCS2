@@ -32,3 +32,11 @@ export const DeleteCategory = async (id) => {
     throw err;
   }
 };
+export const PostCategory = async (body) => {
+  try {
+    const res = await Method.Post("/api/admin/DanhMuc/", body);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

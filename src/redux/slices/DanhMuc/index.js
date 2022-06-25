@@ -27,10 +27,18 @@ export const fetchCategoryUpdate = createAsyncThunk(
     return res;
   }
 );
-export const fetCategoryGetById = createAsyncThunk(
-  "DanhMuc/fetCategoryGetById",
+export const fetchCategoryGetById = createAsyncThunk(
+  "DanhMuc/fetchCategoryGetById",
   async (id) => {
     const res = await request.GetCatById(id);
+    return res;
+  }
+);
+export const fetchCategoryAdd = createAsyncThunk(
+  "DanhMuc/fetchCategoryAdd",
+  async (params) => {
+    const { body } = params;
+    const res = await request.PostCategory(body);
     return res;
   }
 );
@@ -38,10 +46,27 @@ const DanhMucSlice = createSlice({
   name: "DanhMuc",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetCategoryGetById.pending, (state, action) => {
+    builder.addCase(fetchCategoryAdd.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(fetCategoryGetById.fulfilled, (state, action) => {
+    builder.addCase(fetchCategoryAdd.fulfilled, (state, action) => {
+      state.items = [...state.items, action.payload];
+      state.loading = false;
+      notification.open({
+        message: "Thêm thành công!",
+        type: "success",
+      });
+    });
+    builder.addCase(fetchCategoryAdd.rejected, () => {
+      notification.open({
+        message: "Có lỗi xảy ra",
+        type: "error",
+      });
+    });
+    builder.addCase(fetchCategoryGetById.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchCategoryGetById.fulfilled, (state, action) => {
       state.loading = false;
       state.item = action.payload;
     });
@@ -66,6 +91,7 @@ const DanhMucSlice = createSlice({
       });
     });
     builder.addCase(fetchCategoryDelete.rejected, (state, action) => {
+      state.loading = false;
       notification.open({
         message: "Có lỗi xảy ra, vui lòng thử lại sau",
         type: "error",
@@ -82,6 +108,7 @@ const DanhMucSlice = createSlice({
       });
     });
     builder.addCase(fetchCategoryUpdate.rejected, (state, action) => {
+      state.loading = false;
       notification.open({
         message: "Cập nhật thất bại!",
         type: "error",

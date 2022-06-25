@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { adminRoute } from "~/area/admin/components/routes";
 import { publicRoute } from "~/components/routes";
 import { DefaultLayout, AdminLayout } from "~/components/layout";
+import { Suspense } from "react";
+import CustomSpin from "~/components/CustomSpin";
 function App() {
   return (
     <Router>
@@ -17,7 +19,9 @@ function App() {
                 key={index}
                 element={
                   <Layout>
-                    <Page />
+                    <Suspense fallback={<CustomSpin />}>
+                      <Page />
+                    </Suspense>
                   </Layout>
                 }
                 path={route.path}
