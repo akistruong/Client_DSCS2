@@ -5,6 +5,7 @@ const initialState = {
   items: [],
   item: {},
   loading: false,
+  hangmucs: [],
 };
 export const fetchCategoryAll = createAsyncThunk(
   "DanhMuc/fetchCategoryAll",
@@ -39,6 +40,20 @@ export const fetchCategoryAdd = createAsyncThunk(
   async (params) => {
     const { body } = params;
     const res = await request.PostCategory(body);
+    return res;
+  }
+);
+export const fetchGetParentCategory = createAsyncThunk(
+  "DanhMuc/fetchGetParentCategory",
+  async (params) => {
+    const res = await request.GetAllHangMuc();
+    return res;
+  }
+);
+export const fetchGetCateByParent = createAsyncThunk(
+  "DanhMuc/fetchGetCateByParent",
+  async (params) => {
+    const res = await request.GetAllCateByParentCat();
     return res;
   }
 );
@@ -113,6 +128,22 @@ const DanhMucSlice = createSlice({
         message: "Cập nhật thất bại!",
         type: "error",
       });
+    });
+    //fetchGetParentCategory
+    builder.addCase(fetchGetParentCategory.fulfilled, (state, action) => {
+      state.hangmucs = action.payload;
+    });
+    //fetchGetCateByParent
+    builder.addCase(fetchGetCateByParent.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchGetCateByParent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.items = action.payload;
+    });
+    builder.addCase(fetchGetCateByParent.rejected, (state, action) => {
+      state.loading = false;
+      console.log({ ERR: action.error.message });
     });
   },
 });

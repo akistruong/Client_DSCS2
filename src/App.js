@@ -4,7 +4,9 @@ import { publicRoute } from "~/components/routes";
 import { DefaultLayout, AdminLayout } from "~/components/layout";
 import { Suspense } from "react";
 import CustomSpin from "~/components/CustomSpin";
+import SwiperCore, { Autoplay } from "swiper";
 function App() {
+  SwiperCore.use([Autoplay]);
   return (
     <Router>
       <div className="App">

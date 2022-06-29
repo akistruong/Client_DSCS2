@@ -3,6 +3,7 @@ import DanhMucSlice, {
   fetchCategoryAll,
   fetchCategoryDelete,
   fetchCategoryAdd,
+  fetchGetParentCategory,
 } from "~/redux/slices/DanhMuc";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,16 +20,7 @@ const column = (params) => {
   return [
     {
       title: "Tên danh mục",
-      dataIndex: "tenDanhMuc",
-      key: "tenDanhMuc",
-    },
-    {
-      title: "Giới tính và độ tuổi",
-      dataIndex: "gioiTinh",
-      key: "gioiTinh",
-      render: (value) => {
-        return <p>{value.label}</p>;
-      },
+      dataIndex: "info.tenDanhMuc",
     },
     {
       title: "Hành động",
@@ -58,21 +50,15 @@ const column = (params) => {
   ];
 };
 const QuanTriDanhMuc = () => {
-  const { items, item, loading } = useSelector((state) => state.DanhMuc);
+  const { items, item, loading, hangmucs } = useSelector(
+    (state) => state.DanhMuc
+  );
   const [sexOptions, setSexOptions] = useState([]);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const dispatch = useDispatch();
+  console.log({ items });
   useEffect(() => {
     dispatch(fetchCategoryAll());
-    const Fetch = async () => {
-      try {
-        const res = await Method.Get("api/GioiTinh");
-        setSexOptions([...res]);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    Fetch();
   }, []);
   const handleFinish = (e) => {
     dispatch(fetchCategoryAdd({ body: e }));
@@ -98,6 +84,7 @@ const QuanTriDanhMuc = () => {
         <Form
           initialValues={{
             GioiTinhCode: null,
+            parentCategoryID: null,
           }}
           name="AddForm"
           layout="vertical"
@@ -105,6 +92,18 @@ const QuanTriDanhMuc = () => {
         >
           <Form.Item label={"Tên danh mục"} name={"Tendanhmuc"}>
             <Input placeholder="Tên danh mục" />
+          </Form.Item>
+          <Form.Item label={"Tên hạng mục"} name={"parentCategoryID"}>
+            <Select>
+              {hangmucs.map((item) => {
+                return (
+                  <>
+                    <Option value={null}>Chọn hạng mục</Option>;
+                    <Option value={item.id}>{item.tenHangMuc}</Option>;
+                  </>
+                );
+              })}
+            </Select>
           </Form.Item>
           <Form.Item
             rules={[

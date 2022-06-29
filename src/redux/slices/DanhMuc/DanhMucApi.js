@@ -40,3 +40,19 @@ export const PostCategory = async (body) => {
     throw err;
   }
 };
+export const GetAllHangMuc = async () => {
+  try {
+    const res = await Method.Get("/api/ParentCategories");
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+export const GetAllCateByParentCat = async () => {
+  try {
+    const res = await Method.Get("/api/ParentCategories/GetCateByParent");
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

@@ -1,0 +1,23 @@
+@import "../../../GlobalStyles/GlobalStyle.scss";
+.MainHeader
+{
+    position: relative;
+    .SubHeaderForPc
+    {
+        display: flex;
+        justify-content: space-between;
+        @include mobile{
+            display: none;
+    }
+  
+    }
+    .SubHeaderForMobile
+    {
+        @include desktop{
+            display: none;
+        }
+        @include tablet{
+            display: none;
+    }
+    }
+} 

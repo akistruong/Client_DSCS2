@@ -1,24 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Modal,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  InputNumber,
-  Upload,
-  Alert,
-  notification,
-} from "antd";
+import { Modal, Button, Form, Input, Select, InputNumber } from "antd";
 import UploadSingleFile from "./UploadSingleFile";
 import UploadMutipleFile from "./UploadMutipleFile";
 import QuanLySoLuong from "./QuanLySoLuong";
-import axios from "axios";
-import { UploadOutlined, SmileOutlined } from "@ant-design/icons";
-import { Get, Post, Delete, Put } from "~/area/admin/components/api/SanPham";
+import { Get } from "~/area/admin/components/api/SanPham";
 import { useForm } from "antd/lib/form/Form";
+import { useDispatch, useSelector } from "react-redux";
+import CapNhatDanhMuc from "./CapNhatDanhMuc";
+import * as Api from "~/redux/slices/SanPham";
 const { Option } = Select;
 
 document.title = "Trang cập nhật thông tin sản phẩm";
@@ -31,41 +21,42 @@ const CapNhatSanPham = ({
   ModalState,
 }) => {
   const [init, setInit] = useState({});
-  const [formBody, setFormBody] = useState({});
   const [bst, setBst] = useState([]);
   const [cate, setCate] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [mutipleFileInit, setMutipleFileInit] = useState([]);
-  const [sizes, setSize] = useState([]);
   const [openModalQty, setOpenModalQty] = useState(false);
   let { maSP } = useParams();
   let [form] = useForm();
-  useLayoutEffect(() => {
+  const dispatch = useDispatch();
+  const { products, product, loading, totalRow } = useSelector(
+    (state) => state.SanPham
+  );
+  const { btnLoading } = loading;
+  useEffect(() => {
     const Fetch = async () => {
-      var res = await Get("/api/admin/SanPham/" + maSP);
+      const res = await dispatch(Api.fetchGetProduct({ id: maSP }));
+      const data = res.payload;
       form.setFieldsValue({
-        IdDM: res.danhMuc.key,
-        IdBst: res.boSuuTap.key,
-        ...res,
+        IdBst: data.boSuuTap?.key,
+        ...data,
       });
-      setInit(res);
-      if (res.img) {
+      if (data.img) {
         setFileList([
           {
-            uid: res.img,
-            name: res.img,
+            uid: data.img,
+            name: data.img,
             status: "done",
             // custom error message to show
             url:
-              "https://localhost:44328/wwwroot/res/SanPhamRes/Thumb/" + res.img,
+              "https://localhost:44328/wwwroot/res/SanPhamRes/Thumb/" +
+              data.img,
           },
         ]);
       }
-
       var filesTemp = [];
-      if (res.hinhAnh) {
-        res.hinhAnh.forEach((item) => {
+      if (data.hinhAnh) {
+        data.hinhAnh.forEach((item) => {
           filesTemp.push({
             uid: item.key,
             name: item.value,
@@ -98,22 +89,7 @@ const CapNhatSanPham = ({
     getDM();
   }, []);
   const handleSubmit = async (values) => {
-    const res = await Put("/api/admin/SanPham/" + maSP, values);
-    if (res.success) {
-      notification.open({
-        message: "Cập nhập thành công",
-        description: "Cập nhật thành công",
-        className: "alert-success",
-        icon: <SmileOutlined />,
-      });
-    } else {
-      notification.open({
-        message: "Cập nhập thất bại",
-        description: "Có lỗi xảy ra, vui lòng kiểm tra",
-        className: "alert-success",
-        icon: <SmileOutlined />,
-      });
-    }
+    dispatch(Api.fetchPutProduct({ id: maSP, body: values }));
   };
   return (
     <div
@@ -125,10 +101,9 @@ const CapNhatSanPham = ({
       }}
     >
       <Form
-        name="FormChinhSuaSanPham"
         form={form}
+        name="FormChinhSuaSanPham"
         colon={false}
-        initialValues={init}
         layout="vertical"
         onFinish={handleSubmit}
         labelCol={{
@@ -137,8 +112,6 @@ const CapNhatSanPham = ({
         wrapperCol={{
           span: 32,
         }}
-        // onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
@@ -210,25 +183,8 @@ const CapNhatSanPham = ({
             })}
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Tên danh mục"
-          name="IdDM"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn trường này",
-            },
-          ]}
-        >
-          <Select placeholder="Chọn tên danh mục">
-            {cate.map((item, index) => {
-              return (
-                <Option key={"DM" + index} value={item.id}>
-                  {item.tenDanhMuc}
-                </Option>
-              );
-            })}
-          </Select>
+        <Form.Item label="Tên danh mục" name="IdDM">
+          <CapNhatDanhMuc maSP={maSP} />
         </Form.Item>
         <Form.Item label="Ảnh Thumbnail" name="img">
           <UploadSingleFile
@@ -252,7 +208,7 @@ const CapNhatSanPham = ({
           htmlType="submit"
           style={{ display: "block" }}
           onClick={handleSubmit}
-          loading={loading}
+          loading={btnLoading}
         >
           Hoàn tất cập nhật
         </Button>

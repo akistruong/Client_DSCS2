@@ -10,6 +10,8 @@ import ThemSanPham from "~/area/admin/components/pages/QuanTriSanPham/components
 import CapNhatSanPham from "~/area/admin/components/pages/QuanTriSanPham/components/CapNhatSanPham";
 import { Delete, Get } from "~/area/admin/components/api/SanPham/";
 import { Link, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import * as Api from "~/redux/slices/SanPham";
 const Columns = (setModalDelete) => {
   const handleOpenDelete = (_id) => {
     setModalDelete({ _id, state: true });
@@ -73,9 +75,11 @@ const Columns = (setModalDelete) => {
   ];
 };
 const QuanTriSanPham = () => {
+  const dispatch = useDispatch();
+  const { products, product, loading, totalRow } = useSelector(
+    (state) => state.SanPham
+  );
   const [openModalAdd, setOpenModalAdd] = useState(false);
-
-  const [loading, setLoading] = useState(false);
   const [openModalDelete, setModalDelete] = useState({
     _id: null,
     state: false,
@@ -93,26 +97,9 @@ const QuanTriSanPham = () => {
   const fetchData = async (params) => {
     const { page, pageSize, current } = params;
     try {
-      setLoading(true);
-      var data = await Get("api/admin/SanPham", {
-        pageSize,
-        page,
-        sortOrder: params.sortOrder,
-      });
-      setLoading(false);
-      var temp = [];
-      data.products.forEach((item, index) => {
-        temp.push({ key: item.maSanPham, ...item });
-      });
-      setPagination({
-        page,
-        pageSize,
-        total: data.totalRow,
-      });
-      setSource(temp);
-    } catch (err) {
-      console.log(err);
-    }
+      const res = await dispatch(Api.fetchGetAllProducts(params));
+      setPagination({ ...pagination, total: res.payload.totalRow });
+    } catch (err) {}
   };
   useEffect(() => {
     fetchData({ page, pageSize });
@@ -125,35 +112,9 @@ const QuanTriSanPham = () => {
     setOpenModalAdd(false);
   };
   const handleConfirmDelete = async (id) => {
-    try {
-      const res = await Delete("/api/admin/SanPham/" + id);
-      notification.open({
-        message: "Xóa thành công",
-        description: "Xóa thành công",
-        className: "alert-success",
-        icon: <SmileOutlined />,
-      });
-      setModalDelete({ _id: null, state: false });
-      let temp = [...source];
-      let item = temp.find((x) => x.maSanPham == id);
-      if (item) {
-        const index = temp.indexOf(item);
-        if (index != -1) {
-          temp.splice(index, 1);
-          setSource(temp);
-        }
-      }
-    } catch (err) {
-      notification.open({
-        message: err.response.data.title,
-        description: err.response.data.message,
-        className: "alert-error",
-        icon: <IssuesCloseOutlined />,
-      });
-    }
+    dispatch(Api.fetchDeleteProduct({ id }));
   };
   const handleTableChange = (params) => {
-    console.log({ params });
     setSearchParams({
       page: params.current,
     });
@@ -169,9 +130,9 @@ const QuanTriSanPham = () => {
         Thêm sản phẩm
       </Button>
       <Table
-        loading={loading}
+        loading={loading.tableLoading}
         onChange={handleTableChange}
-        dataSource={source}
+        dataSource={products}
         columns={Columns(setModalDelete, handleConfirmDelete)}
         pagination={pagination}
       />
@@ -180,7 +141,7 @@ const QuanTriSanPham = () => {
         visible={openModalAdd}
         onCancel={handleOnCancel}
         setProducts={setSource}
-        list={source}
+        list={products}
         ModalState={setOpenModalAdd}
       />
 

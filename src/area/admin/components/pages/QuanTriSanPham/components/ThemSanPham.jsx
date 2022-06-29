@@ -18,6 +18,8 @@ import {
 import { Get, Post } from "~/area/admin/components/api/SanPham";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { useDispatch, useSelector } from "react-redux";
+import * as Api from "~/redux/slices/SanPham";
 const { Option } = Select;
 
 const ThemSanPham = ({
@@ -28,10 +30,12 @@ const ThemSanPham = ({
   list,
   ModalState,
 }) => {
+  const dispatch = useDispatch();
+  const { products, product, loading } = useSelector((state) => state.SanPham);
+  const { tableLoading, btnLoading } = loading;
   const [formBody, setFormBody] = useState({});
   const [bst, setBst] = useState([]);
   const [cate, setCate] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const isFormValid = () => {
     return form.getFieldsError().some((item) => item.errors.length > 0);
@@ -52,40 +56,8 @@ const ThemSanPham = ({
   }, []);
 
   const handleSubmit = (values) => {
-    const postData = async () => {
-      setLoading(true);
-      try {
-        var res = await Post("/api/admin/SanPham", values);
-        setProducts([...list, { key: res.id, ...res }]);
-        ModalState(false);
-        setLoading(false);
-        notification.open({
-          message: "Thêm thành công",
-          description: "Thêm thành công",
-          className: "alert-success",
-          icon: <SmileOutlined />,
-        });
-      } catch (err) {
-        setLoading(false);
-        if (err.response.data) {
-          notification.open({
-            message: err.response.data.title,
-            description: err.response.data.message,
-            className: "alert-error",
-            icon: <IssuesCloseOutlined />,
-          });
-        } else {
-          notification.open({
-            message: "Có lỗi xảy ra, kiểm tra lại đường truyền",
-            type: "error",
-          });
-        }
-      }
-      setLoading(false);
-    };
-    if (!isFormValid()) {
-      postData();
-    }
+    var res = dispatch(Api.fetchPostProduct({ body: values }));
+    console.log({ res });
   };
   return (
     <Modal
@@ -176,26 +148,6 @@ const ThemSanPham = ({
             })}
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Tên danh mục"
-          name="IdDM"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn trường này",
-            },
-          ]}
-        >
-          <Select placeholder="Chọn tên danh mục">
-            {cate.map((item, index) => {
-              return (
-                <Option key={"DM" + index} value={item.id}>
-                  {item.tenDanhMuc}
-                </Option>
-              );
-            })}
-          </Select>
-        </Form.Item>
 
         {/* <CKEditor
           editor={ClassicEditor}
@@ -208,7 +160,6 @@ const ThemSanPham = ({
           htmlType="submit"
           style={{ display: "block" }}
           onClick={handleSubmit}
-          loading={loading}
         >
           Hoàn tất thêm
         </Button>
