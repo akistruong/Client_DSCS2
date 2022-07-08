@@ -224,7 +224,7 @@ const CapNhatSanPham = ({
         onCancel={() => setOpenModalQty(false)}
         onOk={() => setOpenModalQty(false)}
       >
-        <QuanLySoLuong init={init.soLuong} maSanPham={maSP} />
+        <QuanLySoLuong init={product.soLuong} maSanPham={maSP} />
       </Modal>
     </div>
   );

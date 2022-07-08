@@ -1,15 +1,69 @@
 @import "../../../GlobalStyles/GlobalStyle.scss";
 .MainHeader
 {
+   
     position: relative;
     .SubHeaderForPc
     {
         display: flex;
         justify-content: space-between;
+        .Logo
+        {
+            width: 10rem;
+            height: 10rem;
+        }
         @include mobile{
             display: none;
     }
-  
+    .Actions
+    {
+        display: flex;
+        align-items: center;
+        .Search_Container
+        {
+            & > div
+            {
+                padding:0 1rem;
+            }
+            .content{
+                transition: linear .25s ;
+                display: flex;
+                align-items: center;
+                &:hover 
+                {
+                 border: 1px solid black;
+                }
+                .searchIcon{
+                   cursor: pointer;
+                }
+                .closeIcon
+                {
+                    cursor: pointer;
+                }
+            }
+            .SearchResult
+            {
+                width: 30rem;
+                z-index: 3;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                padding: 1rem 2rem;
+                background-color: white;
+                min-height: 35rem;
+              
+            }
+        }
+        .Cart_Container
+        {
+                display: flex;
+                align-items: center;
+                .cartIcon
+                {
+                    font-size: 3rem;
+                }
+        }
+    }
     }
     .SubHeaderForMobile
     {

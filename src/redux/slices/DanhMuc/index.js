@@ -2,15 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as request from "./DanhMucApi";
 import { notification } from "antd";
 const initialState = {
-  items: [],
+  items: {},
   item: {},
   loading: false,
-  hangmucs: [],
 };
 export const fetchCategoryAll = createAsyncThunk(
   "DanhMuc/fetchCategoryAll",
   async () => {
-    const res = await request.GetAllCategory();
+    const res = await request.GetAllDanhMucForUI();
     return res;
   }
 );
@@ -43,17 +42,10 @@ export const fetchCategoryAdd = createAsyncThunk(
     return res;
   }
 );
-export const fetchGetParentCategory = createAsyncThunk(
-  "DanhMuc/fetchGetParentCategory",
-  async (params) => {
-    const res = await request.GetAllHangMuc();
-    return res;
-  }
-);
-export const fetchGetCateByParent = createAsyncThunk(
-  "DanhMuc/fetchGetCateByParent",
-  async (params) => {
-    const res = await request.GetAllCateByParentCat();
+export const fetchCategoryAllAdmin = createAsyncThunk(
+  "DanhMuc/fetchCategoryAllAdmin",
+  async () => {
+    const res = await request.GetAllDanhMucForAdmin();
     return res;
   }
 );
@@ -65,7 +57,7 @@ const DanhMucSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchCategoryAdd.fulfilled, (state, action) => {
-      state.items = [...state.items, action.payload];
+      state.items.danhmucs.push(action.payload);
       state.loading = false;
       notification.open({
         message: "Thêm thành công!",
@@ -97,9 +89,9 @@ const DanhMucSlice = createSlice({
     });
     builder.addCase(fetchCategoryDelete.fulfilled, (state, action) => {
       const id = action.meta.arg;
-      let temp = state.items.filter((x) => x._id != id);
+      let temp = state.items.danhmucs.filter((x) => x.id != id);
       state.loading = false;
-      state.items = temp;
+      state.items.danhmucs = temp;
       notification.open({
         message: "Xóa thành công!",
         type: "success",
@@ -129,21 +121,13 @@ const DanhMucSlice = createSlice({
         type: "error",
       });
     });
-    //fetchGetParentCategory
-    builder.addCase(fetchGetParentCategory.fulfilled, (state, action) => {
-      state.hangmucs = action.payload;
-    });
-    //fetchGetCateByParent
-    builder.addCase(fetchGetCateByParent.pending, (state) => {
+    //fetchCategoryAllAdmin
+    builder.addCase(fetchCategoryAllAdmin.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchGetCateByParent.fulfilled, (state, action) => {
+    builder.addCase(fetchCategoryAllAdmin.fulfilled, (state, action) => {
       state.loading = false;
       state.items = action.payload;
-    });
-    builder.addCase(fetchGetCateByParent.rejected, (state, action) => {
-      state.loading = false;
-      console.log({ ERR: action.error.message });
     });
   },
 });

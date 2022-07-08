@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import DanhMucSlice, {
-  fetchCategoryAll,
-  fetchCategoryDelete,
-  fetchCategoryAdd,
-  fetchGetParentCategory,
-} from "~/redux/slices/DanhMuc";
+import DanhMucSlice, * as Api from "~/redux/slices/DanhMuc";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
 import { Form, Table, Select, Button, Modal, Input } from "antd";
 import { Link } from "react-router-dom";
 import { useForm } from "antd/lib/form/Form";
 import * as Method from "~/axiosRequest/request";
-const { Option } = Select;
+import { ConsoleSqlOutlined } from "@ant-design/icons";
+const { Option, OptGroup } = Select;
+
 const column = (params) => {
   const { dispatch, sexOptions } = params;
   const handleDelete = (id) => {
-    dispatch(fetchCategoryDelete(id));
+    dispatch(Api.fetchCategoryDelete(id));
   };
   return [
     {
       title: "Tên danh mục",
-      dataIndex: "info.tenDanhMuc",
+      dataIndex: "tenDanhMuc",
+      key: "tenDanhMuc",
     },
     {
       title: "Hành động",
@@ -38,7 +36,7 @@ const column = (params) => {
             <Button
               type="primary"
               danger
-              onClick={() => handleDelete(value._id)}
+              onClick={() => handleDelete(value.id)}
               key={uuidv4()}
             >
               Xóa
@@ -50,18 +48,34 @@ const column = (params) => {
   ];
 };
 const QuanTriDanhMuc = () => {
-  const { items, item, loading, hangmucs } = useSelector(
-    (state) => state.DanhMuc
-  );
+  const { items, item, loading } = useSelector((state) => state.DanhMuc);
   const [sexOptions, setSexOptions] = useState([]);
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [categoryOtp, setCategoryOpt] = useState([]);
   const dispatch = useDispatch();
   console.log({ items });
   useEffect(() => {
-    dispatch(fetchCategoryAll());
+    dispatch(Api.fetchCategoryAll());
   }, []);
   const handleFinish = (e) => {
-    dispatch(fetchCategoryAdd({ body: e }));
+    const parentId = e.parentCategoryID2
+      ? e.parentCategoryID2
+      : e.parentCategoryID;
+    const customParams = {
+      tenDanhMuc: e.tenDanhMuc,
+      parentCategoryID: parentId,
+    };
+    console.log({ customParams });
+    dispatch(Api.fetchCategoryAdd({ body: customParams }));
+  };
+  const handleChange = async (e) => {
+    console.log({ e });
+    try {
+      const res = await Method.Get("/api/admin/DanhMuc/" + e);
+      setCategoryOpt([...res.children]);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -69,10 +83,10 @@ const QuanTriDanhMuc = () => {
         Thêm danh mục
       </Button>
       <Table
-        rowKey={uuidv4()}
         loading={loading}
         columns={column({ dispatch, sexOptions, loading })}
-        dataSource={items}
+        dataSource={items.danhmucs}
+        rowKey={uuidv4()}
       ></Table>
       ;
       <Modal
@@ -84,48 +98,42 @@ const QuanTriDanhMuc = () => {
         <Form
           initialValues={{
             GioiTinhCode: null,
-            parentCategoryID: null,
+            parentCategoryID: 0,
           }}
           name="AddForm"
           layout="vertical"
           onFinish={handleFinish}
         >
-          <Form.Item label={"Tên danh mục"} name={"Tendanhmuc"}>
+          <Form.Item label={"Tên danh mục"} name={"tenDanhMuc"}>
             <Input placeholder="Tên danh mục" />
           </Form.Item>
-          <Form.Item label={"Tên hạng mục"} name={"parentCategoryID"}>
-            <Select>
-              {hangmucs.map((item) => {
+          <Form.Item label={"Mục mức 0"} name={"parentCategoryID"}>
+            <Select onChange={handleChange}>
+              <Option value={0}>Mục gốc (0)</Option>
+              {items?.menu?.map((item) => {
                 return (
-                  <>
-                    <Option value={null}>Chọn hạng mục</Option>;
-                    <Option value={item.id}>{item.tenHangMuc}</Option>;
-                  </>
-                );
-              })}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            rules={[
-              {
-                required: true,
-                message: "Phải chọn trường này!",
-              },
-            ]}
-            label={"Độ tuổi và giới tính"}
-            name={"GioiTinhCode"}
-          >
-            <Select>
-              <Option value={null}>Chọn giới tính, độ tuổi</Option>
-              {sexOptions.map((item) => {
-                return (
-                  <Option key={uuidv4()} value={item?.value}>
-                    {item?.label}
+                  <Option key={uuidv4()} value={item.info.id}>
+                    {item.info.tenDanhMuc}
                   </Option>
                 );
               })}
             </Select>
           </Form.Item>
+          {categoryOtp?.length > 0 && (
+            <Form.Item label={"Mục mức 1"} name={"parentCategoryID2"}>
+              <Select key={uuidv4()}>
+                <Option value={0}>Mục gốc (0)</Option>
+                {categoryOtp?.map((item) => {
+                  return (
+                    <Option key={uuidv4()} value={item.id}>
+                      {item.tenDanhMuc}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          )}
+
           <Button htmlType="submit" loading={loading}>
             Thêm
           </Button>

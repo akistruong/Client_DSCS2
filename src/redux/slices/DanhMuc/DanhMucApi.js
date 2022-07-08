@@ -1,6 +1,6 @@
 import * as Method from "~/axiosRequest/request";
 
-export const GetAllCategory = async () => {
+export const GetAllDanhMucForUI = async () => {
   try {
     const res = await Method.Get("/api/admin/DanhMuc");
     return res;
@@ -40,17 +40,9 @@ export const PostCategory = async (body) => {
     throw err;
   }
 };
-export const GetAllHangMuc = async () => {
+export const GetAllDanhMucForAdmin = async () => {
   try {
-    const res = await Method.Get("/api/ParentCategories");
-    return res;
-  } catch (err) {
-    throw err;
-  }
-};
-export const GetAllCateByParentCat = async () => {
-  try {
-    const res = await Method.Get("/api/ParentCategories/GetCateByParent");
+    const res = await Method.Get("/api/admin/DanhMuc/GetAllDanhMuc");
     return res;
   } catch (err) {
     throw err;

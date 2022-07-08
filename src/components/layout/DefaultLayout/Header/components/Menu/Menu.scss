@@ -1,9 +1,14 @@
 .MenuComponent
 {
     display: flex;
+    align-items: center;
+    height: 100%;
     .Item{
         margin:0 1rem;
         cursor: pointer;
+        height: 100%;
+        display: flex;
+        align-items: center;
         .Dropdown
         {
             z-index: 10;

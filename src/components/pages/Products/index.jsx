@@ -1,5 +1,10 @@
 import React from "react";
 import { Table, Button } from "antd";
+import "./TrangSanPham.scss";
+import Filter from "./components/FilterComponent";
+import CardProduct from "~/components/commomComponents/CardProduct";
+import SanPhamSlice from "~/redux/slices/SanPham";
+import { useDispatch, useSelector } from "react-redux";
 const dataSource = [
   {
     key: "1",
@@ -37,10 +42,14 @@ const columns = [
 ];
 
 const TrangSanPham = () => {
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.SanPham);
+  console.log({ products });
   return (
     <div className="TrangSanPham">
-      <Button type="primary">Thêm sản phẩm</Button>
-      {/* <Table dataSource={dataSource} columns={columns} /> */}
+      <div className="Filter">
+        <Filter />
+      </div>
     </div>
   );
 };

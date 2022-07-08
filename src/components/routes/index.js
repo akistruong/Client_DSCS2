@@ -6,7 +6,7 @@ const publicRoute = [
     element: Elements.Home,
   },
   {
-    path: "/trang-san-pham/:slug/:id",
+    path: "/:slug",
     element: Elements.TrangSanPham,
   },
   {

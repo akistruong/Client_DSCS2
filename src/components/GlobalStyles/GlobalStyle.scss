@@ -19,12 +19,23 @@ body{
     font-size: $font_size_default;
     line-height: $line_height_default;
     text-rendering: optimizeSpeed;
+    box-sizing: border-box;
   }
 ul
 {
     list-style: none;
 }
+strong{
+  text-transform: uppercase;
+}
+button{
+border: none;  
+}
 a{
+}
+.headingPage{
+  font-size: 3rem;
+  font-weight: bolder;
 }
 [data-theme="dark"] .ant-layout-header {
     background: black;
@@ -39,6 +50,11 @@ a{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: $radius_cornor;
   }
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   input{
     width: 100%;
     height: 100%;
@@ -47,7 +63,7 @@ a{
     border: none;
   }
   svg{
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .table-row-light
   {
@@ -68,6 +84,16 @@ a{
 }
 a{
   color:#00070c;
+  &:hover{
+    color:rgb(144, 136, 136);
+    
+  }
+}
+.ant-checkbox-group-item
+{
+  padding: .5rem;
+  border: 1px solid black;
+  border-radius: 4px;
 }
 $mobile-width: 480px; 
 $tablet-width: 768px; 

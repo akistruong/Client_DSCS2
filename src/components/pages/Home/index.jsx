@@ -8,9 +8,8 @@ document.title = "Trang chính";
 const Home = () => {
   return (
     <div>
-      <strong>ĐÁNG CHÚ Ý</strong>
       <BSTSlider />
-      <strong>VỪA CẬP NHẬT</strong>
+      <strong className="headingPage">VỪA CẬP NHẬT</strong>
       <NewRelease />
     </div>
   );
