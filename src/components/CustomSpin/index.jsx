@@ -1,6 +1,6 @@
 import React from "react";
 import "./CustomSpin.scss";
-const index = () => {
+const CustomSpin = () => {
   return (
     <div className="wrapper">
       <div className="circle-loading"></div>
@@ -8,4 +8,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default CustomSpin;

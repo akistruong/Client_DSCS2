@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "antd";
+import { Checkbox, Radio } from "antd";
 import "./colorOptions.scss";
 import { useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -19,12 +19,12 @@ const ColorOptions = () => {
       value: "yellow",
     },
   ];
-  let checkedItems = searchParams.getAll("color");
+  let checkedItems = searchParams.get("color");
   const handleCheckBox = (e) => {
     setSearchParams({
       sort: searchParams.get("sort") || "",
       size: searchParams.getAll("size") || "",
-      color: [...e],
+      color: e.target.value,
     });
   };
   const handleDefaultChecked = (e) => {
@@ -37,13 +37,13 @@ const ColorOptions = () => {
     }
   };
   return (
-    <Checkbox.Group
+    <Radio.Group
       defaultValue={checkedItems}
       onChange={handleCheckBox}
       options={items}
     >
       {" "}
-    </Checkbox.Group>
+    </Radio.Group>
   );
 };
 

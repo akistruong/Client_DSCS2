@@ -54,6 +54,14 @@ export const fetchDeleteProduct = createAsyncThunk(
     return res;
   }
 );
+export const fetchGetAllProductsUser = createAsyncThunk(
+  "fetchGetAllProductsUser",
+  async (params) => {
+    const { id, query } = params;
+    const res = await Api.GetAllProductsUser(id, query);
+    return res;
+  }
+);
 const SanPhamSlice = createSlice({
   initialState,
   name: "SanPham",
@@ -63,6 +71,16 @@ const SanPhamSlice = createSlice({
       state.loading.tableLoading = true;
     });
     builder.addCase(fetchGetAllProducts.fulfilled, (state, action) => {
+      state.loading.tableLoading = false;
+      const { products, totalRow } = action.payload;
+      state.products = products;
+      state.totalRow = totalRow;
+    });
+    //fetchGetAllProductsUser
+    builder.addCase(fetchGetAllProductsUser.pending, (state) => {
+      state.loading.tableLoading = true;
+    });
+    builder.addCase(fetchGetAllProductsUser.fulfilled, (state, action) => {
       state.loading.tableLoading = false;
       const { products, totalRow } = action.payload;
       state.products = products;

@@ -25,9 +25,9 @@ const NewRelease = () => {
           // when window width is >= 768px
           768: {
             width: 768,
-            slidesPerView: 4,
+            slidesPerView: 2,
           },
-          1400: {
+          1600: {
             width: 1600,
             slidesPerView: 4,
           },

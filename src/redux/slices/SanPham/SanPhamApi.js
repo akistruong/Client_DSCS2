@@ -40,7 +40,11 @@ export const DeleteProduct = async (id) => {
     throw error;
   }
 };
-export const UpdateCategory = async ()=>
-{
-  
-}
+export const GetAllProductsUser = async (id, params) => {
+  try {
+    const res = await Method.Get("/api/SanPham/" + id, params);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

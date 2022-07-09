@@ -3,7 +3,7 @@
 {
    
     position: relative;
-    .SubHeaderForPc
+    .SubHeader
     {
         display: flex;
         justify-content: space-between;
@@ -12,8 +12,47 @@
             width: 10rem;
             height: 10rem;
         }
-        @include mobile{
+        .MenuIconMobile
+        {
             display: none;
+        }
+        .SearchContainer__mobile
+        {
+            display: none;
+            align-items: center;
+            .iconSearch__mobile
+            {
+                margin-right: 1rem;
+            }
+        }
+        .Menu{
+            .MenuMobile
+            {
+
+                display: none;
+            }
+        }
+        @include mobile{
+            .MenuIconMobile
+            {
+                display: flex;
+                align-items: center;
+            }
+            .Menu
+            {
+                
+                display: none;
+            }
+            .Actions
+            {
+                .Search_Container{
+                    display: none;
+                }
+            }
+            .SearchContainer__mobile
+            {
+                display: flex;
+            }
     }
     .Actions
     {
@@ -65,13 +104,5 @@
         }
     }
     }
-    .SubHeaderForMobile
-    {
-        @include desktop{
-            display: none;
-        }
-        @include tablet{
-            display: none;
-    }
-    }
+
 } 
