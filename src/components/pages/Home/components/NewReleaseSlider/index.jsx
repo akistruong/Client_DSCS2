@@ -4,17 +4,14 @@ import { Pagination } from "swiper";
 import * as request from "~/axiosRequest/request";
 import { useEffect, useState } from "react";
 import CardProduct from "~/components/commomComponents/CardProduct";
-import { Col, Row } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import * as Api from "~/redux/slices/SanPham";
 const NewRelease = () => {
-  const [producstNew, setProductsNew] = useState([]);
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.SanPham);
+  console.log({ products });
   useEffect(() => {
-    const FetchAllNewReleaseProducts = async () => {
-      try {
-        const res = await request.Get("/api/Home/ProductsLatesUpdate");
-        setProductsNew(res);
-      } catch (err) {}
-    };
-    FetchAllNewReleaseProducts();
+    dispatch(Api.fetchGetLatestProducts());
   }, []);
   return (
     <div>
@@ -40,10 +37,10 @@ const NewRelease = () => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        {producstNew.map((item) => {
+        {products?.map((item) => {
           return (
-            <SwiperSlide>
-              <CardProduct></CardProduct>
+            <SwiperSlide key={item.id}>
+              <CardProduct value={item}></CardProduct>
             </SwiperSlide>
           );
         })}

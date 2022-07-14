@@ -48,3 +48,11 @@ export const GetAllProductsUser = async (id, params) => {
     throw err;
   }
 };
+export const GetAllLatestProducts = async () => {
+  try {
+    const res = await Method.Get("/api/Home/ProductsLatesUpdate");
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

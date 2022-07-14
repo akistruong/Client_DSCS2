@@ -57,7 +57,11 @@ const ThemSanPham = ({
 
   const handleSubmit = (values) => {
     var res = dispatch(Api.fetchPostProduct({ body: values }));
-    console.log({ res });
+  };
+  const handleDscChange = (e) => {
+    form.setFieldsValue({
+      Mota: e,
+    });
   };
   return (
     <Modal
@@ -122,18 +126,6 @@ const ThemSanPham = ({
         >
           <InputNumber placeholder="Số lượng" />
         </Form.Item>
-        {/* <Form.Item
-          label="Số lượng nhập"
-          name="SoLuongNhap"
-          rules={[
-            {
-              required: true,
-              message: "Không bỏ trống trường này!",
-            },
-          ]}
-        >
-          <InputNumber />
-        </Form.Item> */}
         <Form.Item label="Tên bộ sưu tập" name="IdBst">
           <Select placeholder="Chọn bộ sưu tập">
             <Option key="none" value={null}>
@@ -148,12 +140,12 @@ const ThemSanPham = ({
             })}
           </Select>
         </Form.Item>
-
-        {/* <CKEditor
+        <Form.Item></Form.Item>
+        <Form.Item name="Mota" hidden></Form.Item>
+        <CKEditor
           editor={ClassicEditor}
-          onChange={(e, editor) => console.log(e, editor.getData())}
-        /> */}
-
+          onChange={(e, editor) => handleDscChange(editor.getData())}
+        />
         <Button
           block
           type="primary"

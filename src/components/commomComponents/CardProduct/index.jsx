@@ -3,10 +3,14 @@ import { Card } from "antd";
 import "./CardProduct.scss";
 import { Link } from "react-router-dom";
 const CardProduct = ({ value = {} }) => {
-  const { maSanPham, tenSanPham, giaBanDisplay, boSuuTap } = value;
+  console.log({ value });
+  const { maSanPham, tenSanPham, giaBanDisplay, boSuuTap, slug } = value;
   return (
     <Card>
-      <Link to="/" className="CardProduct_Content">
+      <Link
+        to={`/san-pham/${slug?.trim()}/${maSanPham?.trim()}`}
+        className="CardProduct_Content"
+      >
         <div className="imgGroup">
           <img
             style={{ height: "100%" }}

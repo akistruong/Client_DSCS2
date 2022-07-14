@@ -6,15 +6,20 @@ import SearchDrawer from "./components/SearchDrawer";
 import { BarsOutlined } from "@ant-design/icons";
 import shoesLogo from "~/assets/shoesLogo.png";
 import MenuMobile from "./components/MenuMobile";
+import GioHangSlice from "~/redux/slices/GioHang/GioHangSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SearchOutlined,
   CloseOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Card } from "antd";
+import { Badge, Card } from "antd";
+import { Link } from "react-router-dom";
 function HeaderMainHome() {
   const [searchDrawer, setSearchDrawer] = useState(false);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
+  const { totalQty } = useSelector((state) => state.GioHang);
+  console.log({ totalQty });
   const handleOpenSearchDrawer = () => {
     setSearchDrawer(true);
   };
@@ -73,7 +78,12 @@ function HeaderMainHome() {
             </div> */}
           </div>
           <div className="Cart_Container">
-            <ShoppingCartOutlined className="cartIcon" />
+            <Badge count={totalQty}>
+              <Link to="/gio-hang">
+                {" "}
+                <ShoppingCartOutlined className="cartIcon" />
+              </Link>
+            </Badge>
           </div>
         </div>
       </div>

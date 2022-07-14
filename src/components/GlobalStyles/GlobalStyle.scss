@@ -100,15 +100,15 @@ a{
   border-radius: 4px;
 }
 $mobile-width: 480px; 
-$tablet-width: 768px; 
-$desktop-width: 1024px;  
+$tablet-width: 992px; 
+$desktop-width: 1200px;  
 
 @mixin mobile { @media (max-width: #{$mobile-width - 1px}) {     
   @content;   
  } 
 }  
 
-@mixin tablet { @media (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1px}) {       
+@mixin tablet { @media  (max-width: #{$tablet-width - 1px}) {       
    @content;   
  } 
 }  
@@ -116,4 +116,35 @@ $desktop-width: 1024px;
 @mixin desktop {   @media (min-width: #{$desktop-width}) {     
   @content;  
  } 
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

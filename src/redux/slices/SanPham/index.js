@@ -62,10 +62,25 @@ export const fetchGetAllProductsUser = createAsyncThunk(
     return res;
   }
 );
+export const fetchGetLatestProducts = createAsyncThunk(
+  "fetchGetLatestProducts",
+  async () => {
+    const res = await Api.GetAllLatestProducts();
+    return res;
+  }
+);
 const SanPhamSlice = createSlice({
   initialState,
   name: "SanPham",
   extraReducers: (builder) => {
+    //fetchGetLatestProducts
+    builder.addCase(fetchGetLatestProducts.pending, (state) => {
+      state.loading.tableLoading = true;
+    });
+    builder.addCase(fetchGetLatestProducts.fulfilled, (state, action) => {
+      state.loading.tableLoading = false;
+      state.products = action.payload;
+    });
     //fetchGetAllProducts
     builder.addCase(fetchGetAllProducts.pending, (state) => {
       state.loading.tableLoading = true;

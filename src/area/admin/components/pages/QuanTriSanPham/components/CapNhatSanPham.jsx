@@ -9,6 +9,9 @@ import { useForm } from "antd/lib/form/Form";
 import { useDispatch, useSelector } from "react-redux";
 import CapNhatDanhMuc from "./CapNhatDanhMuc";
 import * as Api from "~/redux/slices/SanPham";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import FormItem from "antd/lib/form/FormItem";
 const { Option } = Select;
 
 document.title = "Trang cập nhật thông tin sản phẩm";
@@ -90,6 +93,11 @@ const CapNhatSanPham = ({
   }, []);
   const handleSubmit = async (values) => {
     dispatch(Api.fetchPutProduct({ id: maSP, body: values }));
+  };
+  const handleDscChange = (text) => {
+    form.setFieldsValue({
+      Mota: text,
+    });
   };
   return (
     <div
@@ -202,6 +210,14 @@ const CapNhatSanPham = ({
             fieldValue={form.setFieldsValue}
           />
         </Form.Item>
+        <FormItem name={"Mota"} hidden></FormItem>
+        <CKEditor
+          editor={ClassicEditor}
+          data={product.mota || ""}
+          onChange={(e, editor) => handleDscChange(editor.getData())}
+        >
+          dawadadad
+        </CKEditor>
         <Button
           block
           type="primary"

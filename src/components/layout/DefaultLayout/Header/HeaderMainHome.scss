@@ -32,7 +32,7 @@
                 display: none;
             }
         }
-        @include mobile{
+        @include tablet{
             .MenuIconMobile
             {
                 display: flex;
