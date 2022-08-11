@@ -1,5 +1,5 @@
 import * as Elements from "~/components/pages";
-
+import { GuessAuthLayout } from "../layout";
 const publicRoute = [
   {
     path: "/",
@@ -17,7 +17,26 @@ const publicRoute = [
     path: "/gio-hang",
     element: Elements.TrangChiTietSanPham,
   },
+  {
+    path: "/dang-nhap",
+    element: Elements.AuthPage,
+    layout: GuessAuthLayout,
+  },
+  {
+    path: "/dang-nhap/phoneOTP",
+    element: Elements.PhoneOTP,
+    layout: GuessAuthLayout,
+  },
+  {
+    path: "/dang-ky",
+    element: Elements.GuessRegisterForm,
+  },
 ];
-const privateRoute = [];
+const privateRoute = [
+  {
+    path: "/me",
+    element: Elements.MePage,
+  },
+];
 
 export { publicRoute, privateRoute };

@@ -58,19 +58,24 @@
     {
         display: flex;
         align-items: center;
+        & > div
+        {
+            margin:0 1rem;
+        }
         .Search_Container
         {
             & > div
             {
-                padding:0 1rem;
+                padding:.3rem 1rem;
             }
             .content{
-                transition: linear .25s ;
+                border: 0px solid white;
+                transition: ease .2s ;
                 display: flex;
                 align-items: center;
                 &:hover 
                 {
-                 border: 1px solid black;
+                 border: 2px solid black;
                 }
                 .searchIcon{
                    cursor: pointer;

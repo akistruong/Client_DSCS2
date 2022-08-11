@@ -16,15 +16,22 @@ import {
 import { Badge, Card } from "antd";
 import { Link } from "react-router-dom";
 function HeaderMainHome() {
+  const [searchValue, setSearchValue] = useState("");
   const [searchDrawer, setSearchDrawer] = useState(false);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const { totalQty } = useSelector((state) => state.GioHang);
-  console.log({ totalQty });
+
+  const handleClearTextSearch = () => {
+    setSearchValue("");
+  };
   const handleOpenSearchDrawer = () => {
     setSearchDrawer(true);
   };
   const handleOpenMenuDrawer = () => {
     setMenuMobileOpen(true);
+  };
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
   };
   return (
     <div
@@ -42,9 +49,9 @@ function HeaderMainHome() {
         menuMobileOpen={menuMobileOpen}
         setMenuMobileOpen={setMenuMobileOpen}
       />
-      <div className="UserHeader">
+      {/* <div className="UserHeader">
         <UserHeader />
-      </div>
+      </div> */}
       <div className="SubHeader">
         <div className="MenuIconMobile">
           <BarsOutlined onClick={handleOpenMenuDrawer} />
@@ -68,9 +75,16 @@ function HeaderMainHome() {
                 type="text"
                 className="SearchInput"
                 placeholder="Tìm kiếm"
+                value={searchValue}
+                onChange={handleSearch}
               />
-              <SearchOutlined className="searchIcon" />
-              <CloseOutlined className="closeIcon" />
+              {searchValue == "" && <SearchOutlined className="searchIcon" />}
+              {searchValue && (
+                <CloseOutlined
+                  className="closeIcon"
+                  onClick={handleClearTextSearch}
+                />
+              )}
             </div>
             {/* <div className="SearchResult">
               <h3>SẢN PHẨM</h3>
@@ -84,6 +98,9 @@ function HeaderMainHome() {
                 <ShoppingCartOutlined className="cartIcon" />
               </Link>
             </Badge>
+          </div>
+          <div className="UserInfo">
+            <UserHeader />
           </div>
         </div>
       </div>

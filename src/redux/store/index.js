@@ -4,6 +4,7 @@ import BSTSlice from "../slices/BoSuuTap";
 import SanPhamSlice from "../slices/SanPham";
 import KichCoSlice from "../slices/KichCoSlice";
 import GioHangSlice from "../slices/GioHang/GioHangSlice";
+import XacThucSlice from "../slices/XacThuc";
 export const store = configureStore({
   reducer: {
     DanhMuc: DanhMucSlice.reducer,
@@ -11,5 +12,6 @@ export const store = configureStore({
     SanPham: SanPhamSlice.reducer,
     KichCo: KichCoSlice.reducer,
     GioHang: GioHangSlice.reducer,
+    XacThuc: XacThucSlice.reducer,
   },
 });

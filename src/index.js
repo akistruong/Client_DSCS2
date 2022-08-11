@@ -2,6 +2,7 @@ import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "react-phone-input-2/lib/style.css";
 import "antd/dist/antd.css";
 import "swiper/css";
 import GlobalStyle from "./components/GlobalStyles";
