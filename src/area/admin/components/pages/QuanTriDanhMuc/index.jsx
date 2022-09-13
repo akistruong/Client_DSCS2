@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "antd/lib/form/Form";
 import * as Method from "~/axiosRequest/request";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import ChildrenComponent from "./components/ChildrenComponent";
+import ThemDanhMuc from "./components/ThemDanhMuc";
 const { Option, OptGroup } = Select;
 
 const column = (params) => {
@@ -17,8 +19,11 @@ const column = (params) => {
   return [
     {
       title: "Tên danh mục",
-      dataIndex: "tenDanhMuc",
-      key: "tenDanhMuc",
+      key: uuidv4(),
+      render: (_, value) => {
+        console.log({ value });
+        return <p>{value.info.tenDanhMuc}</p>;
+      },
     },
     {
       title: "Hành động",
@@ -28,7 +33,7 @@ const column = (params) => {
           <>
             <Button type="primary" key={uuidv4()}>
               <Link
-                to={`/admin/trang-quan-tri-danh-muc/chinh-sua/${value._id}`}
+                to={`/admin/trang-quan-tri-danh-muc/chinh-sua/${value.info.id}`}
               >
                 Cập nhật
               </Link>
@@ -53,91 +58,28 @@ const QuanTriDanhMuc = () => {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [categoryOtp, setCategoryOpt] = useState([]);
   const dispatch = useDispatch();
-  console.log({ items });
   useEffect(() => {
     dispatch(Api.fetchCategoryAll());
   }, []);
-  const handleFinish = (e) => {
-    const parentId = e.parentCategoryID2
-      ? e.parentCategoryID2
-      : e.parentCategoryID;
-    const customParams = {
-      tenDanhMuc: e.tenDanhMuc,
-      parentCategoryID: parentId,
-    };
-    console.log({ customParams });
-    dispatch(Api.fetchCategoryAdd({ body: customParams }));
-  };
-  const handleChange = async (e) => {
-    console.log({ e });
-    try {
-      const res = await Method.Get("/api/admin/DanhMuc/" + e);
-      setCategoryOpt([...res.children]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <>
       <Button type="primary" onClick={() => setOpenModalAdd(true)}>
         Thêm danh mục
       </Button>
-      <Table
+      {/* <Table
+        expandable={{
+          showExpandColumn: false,
+        }}
         loading={loading}
         columns={column({ dispatch, sexOptions, loading })}
-        dataSource={items.danhmucs}
+        dataSource={items.menu}
         rowKey={uuidv4()}
-      ></Table>
-      ;
-      <Modal
-        visible={openModalAdd}
-        cancelText="Hủy"
-        okButtonProps={{ hidden: true }}
-        onCancel={() => setOpenModalAdd(false)}
-      >
-        <Form
-          initialValues={{
-            GioiTinhCode: null,
-            parentCategoryID: 0,
-          }}
-          name="AddForm"
-          layout="vertical"
-          onFinish={handleFinish}
-        >
-          <Form.Item label={"Tên danh mục"} name={"tenDanhMuc"}>
-            <Input placeholder="Tên danh mục" />
-          </Form.Item>
-          <Form.Item label={"Mục mức 0"} name={"parentCategoryID"}>
-            <Select onChange={handleChange}>
-              <Option value={0}>Mục gốc (0)</Option>
-              {items?.menu?.map((item) => {
-                return (
-                  <Option key={uuidv4()} value={item.info.id}>
-                    {item.info.tenDanhMuc}
-                  </Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
-          {categoryOtp?.length > 0 && (
-            <Form.Item label={"Mục mức 1"} name={"parentCategoryID2"}>
-              <Select key={uuidv4()}>
-                <Option value={0}>Mục gốc (0)</Option>
-                {categoryOtp?.map((item) => {
-                  return (
-                    <Option key={uuidv4()} value={item.id}>
-                      {item.tenDanhMuc}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          )}
-
-          <Button htmlType="submit" loading={loading}>
-            Thêm
-          </Button>
-        </Form>
+      ></Table> */}
+      {items.menu?.map((item) => (
+        <ChildrenComponent value={item} />
+      ))}
+      <Modal visible={openModalAdd} onCancel={() => setOpenModalAdd(false)}>
+        <ThemDanhMuc />
       </Modal>
     </>
   );

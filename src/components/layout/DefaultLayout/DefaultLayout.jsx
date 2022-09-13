@@ -6,9 +6,7 @@ const { Header, Content, Sider, Footer } = Layout;
 const DefaultLayout = ({ children }) => {
   return (
     <Layout>
-      <Header
-        style={{ backgroundColor: "white", padding: "1rem", height: "100%" }}
-      >
+      <Header style={{ backgroundColor: "white", height: "100%" }}>
         <HeaderMainHome />
       </Header>
       <Content>{children}</Content>

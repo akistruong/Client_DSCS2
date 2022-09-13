@@ -76,6 +76,7 @@ const TrangSanPham = () => {
               return (
                 <Col
                   key={item.maSanPham}
+                  sm={{ span: 24 }}
                   xs={{ span: 24 }}
                   md={{ span: 12 }}
                   xl={{ span: 6 }}

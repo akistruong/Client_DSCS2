@@ -9,6 +9,7 @@ import DanhMucSlice, {
   fetchCategoryUpdate,
 } from "~/redux/slices/DanhMuc";
 import { useState } from "react";
+import ChildrenComponent from "./ChildrenComponent";
 const { useForm } = Form;
 const { Option } = Select;
 
@@ -27,21 +28,45 @@ function SuaDanhMuc() {
   }, [item]);
   useEffect(() => {
     dispatch(fetchCategoryGetById(maDM));
-
-    const Fetch = async () => {
-      try {
-        const res = await Method.Get("api/GioiTinh");
-        setSexOptions([...res]);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    Fetch();
   }, [maDM]);
   const handleFinish = (value) => {
     dispatch(fetchCategoryUpdate({ id: value.Id, body: value }));
     console.log(value);
   };
+  const data = [
+    {
+      label: "Mục 1",
+      childrens: [
+        {
+          label: "Mục 1.1",
+          childrens: [
+            {
+              label: "Mục 1.1.1",
+            },
+            {
+              label: "Mục 1.1.2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Mục 2",
+      childrens: [
+        {
+          label: "Mục 2.1",
+          childrens: [
+            {
+              label: "Mục 2.1.1",
+            },
+            {
+              label: "Mục 2.1.2",
+            },
+          ],
+        },
+      ],
+    },
+  ];
   return (
     <>
       <Form
@@ -54,12 +79,12 @@ function SuaDanhMuc() {
         <Form.Item label={"Tên danh mục"} name={"Tendanhmuc"}>
           <Input />
         </Form.Item>
-        <Form.Item label={"Độ tuổi và giới tính"} name={"GioiTinhCode"}>
-          <Select options={sexOptions}></Select>
-        </Form.Item>
-        <Button htmlType="submit" loading={loading}>
+        {data.map((item) => (
+          <ChildrenComponent value={item} />
+        ))}
+        {/* <Button htmlType="submit" loading={loading}>
           Xác nhận
-        </Button>
+        </Button> */}
       </Form>
     </>
   );

@@ -32,7 +32,9 @@ const MenuMobile = ({ menuMobileOpen, setMenuMobileOpen }) => {
               null,
               item2.children.map((item3) => {
                 return getItem(
-                  <Link to={`/${item3.slug}`}>{item3.tenDanhMuc}</Link>,
+                  <Link to={`/${item3.info.slug}`}>
+                    {item3.info.tenDanhMuc}
+                  </Link>,
                   item3.id
                 );
               })

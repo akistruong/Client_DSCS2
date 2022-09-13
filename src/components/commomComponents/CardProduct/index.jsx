@@ -13,7 +13,6 @@ const CardProduct = ({ value = {} }) => {
       >
         <div className="imgGroup">
           <img
-            style={{ height: "100%" }}
             src={
               "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/8020d7fee088442d8da2ae2801123818_9366/Giay_Stan_Smith_Pride_trang_GX6394_01_standard.jpg"
             }

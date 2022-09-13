@@ -4,6 +4,7 @@ import { notification } from "antd";
 const initialState = {
   items: {},
   item: {},
+  itemsArr: [],
   loading: false,
 };
 export const fetchCategoryAll = createAsyncThunk(
@@ -37,8 +38,7 @@ export const fetchCategoryGetById = createAsyncThunk(
 export const fetchCategoryAdd = createAsyncThunk(
   "DanhMuc/fetchCategoryAdd",
   async (params) => {
-    const { body } = params;
-    const res = await request.PostCategory(body);
+    const res = await request.PostCategory(params);
     return res;
   }
 );
@@ -49,16 +49,21 @@ export const fetchCategoryAllAdmin = createAsyncThunk(
     return res;
   }
 );
+export const fetchGetCategoryByParentId = createAsyncThunk(
+  "DanhMuc/fetchGetCategoryByParentId",
+  async (params) => {
+    const { id } = params;
+    const res = await request.GetCategoryByParentId(id);
+    return res;
+  }
+);
 const DanhMucSlice = createSlice({
   name: "DanhMuc",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetchCategoryAdd.pending, (state, action) => {
-      state.loading = true;
-    });
+    //fetchCategoryAdd
+
     builder.addCase(fetchCategoryAdd.fulfilled, (state, action) => {
-      state.items.danhmucs.push(action.payload);
-      state.loading = false;
       notification.open({
         message: "Thêm thành công!",
         type: "success",
@@ -128,6 +133,14 @@ const DanhMucSlice = createSlice({
     builder.addCase(fetchCategoryAllAdmin.fulfilled, (state, action) => {
       state.loading = false;
       state.items = action.payload;
+    });
+    //fetchGetCategoryByParentId
+    builder.addCase(fetchGetCategoryByParentId.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchGetCategoryByParentId.fulfilled, (state, action) => {
+      state.loading = false;
+      state.itemsArr = action.payload;
     });
   },
 });

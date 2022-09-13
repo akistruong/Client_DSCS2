@@ -8,6 +8,16 @@ export const GetAllDanhMucForUI = async () => {
     throw err;
   }
 };
+export const GetCategoryByParentId = async (id) => {
+  try {
+    const res = await Method.Get(
+      "/api/admin/DanhMuc/GetDanhMucByParentId/" + id
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 export const GetCatById = async (id) => {
   try {
     const res = await Method.Get("/api/admin/DanhMuc/" + id);

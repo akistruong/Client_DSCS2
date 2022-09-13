@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const cart = JSON.parse(localStorage.getItem("cart"));
 console.log({ cart });
 const initialState = {
-  cartItems: cart || [],
+  cartItems: cart?.cartItems || [],
   totalPrice: cart?.totalPrice || 0,
   totalQty: cart?.totalQty || 0,
   code: cart?.code || null,
@@ -25,6 +25,7 @@ const GioHangSlice = createSlice({
       const cart = localStorage.getItem("cart");
       const cartObj = JSON.parse(cart);
       if (cartObj) {
+        console.log({ cartItems: state.cartItems });
         const cartItem = state.cartItems.find(
           (x) =>
             x.maSanPham == action.payload.maSanPham &&
@@ -45,7 +46,7 @@ const GioHangSlice = createSlice({
         state.cartItems.push(action.payload);
         state.code = 0;
         state.totalPrice = action.payload.giaBan;
-        state.totalQty = 1;
+        state.totalQty += 1;
         localStorage.setItem("cart", JSON.stringify(state));
       }
     },

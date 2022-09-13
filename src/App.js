@@ -33,15 +33,20 @@ function App() {
               <Route
                 key={index}
                 element={
-                  user.role == "1" ? (
-                    <AdminLayout>
-                      <Suspense fallback={<CustomSpin />}>
-                        <Page />
-                      </Suspense>
-                    </AdminLayout>
-                  ) : (
-                    <h1>KHONG DU QUYEN TRUY CAP</h1>
-                  )
+                  // user.role == "1" ? (
+                  //   <AdminLayout>
+                  //     <Suspense fallback={<CustomSpin />}>
+                  //       <Page />
+                  //     </Suspense>
+                  //   </AdminLayout>
+                  // ) : (
+                  //   <h1>KHONG DU QUYEN TRUY CAP</h1>
+                  // )
+                  <AdminLayout>
+                    <Suspense fallback={<CustomSpin />}>
+                      <Page />
+                    </Suspense>
+                  </AdminLayout>
                 }
                 path={route.path}
               ></Route>

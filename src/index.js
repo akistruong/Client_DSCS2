@@ -1,11 +1,11 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import "antd/dist/antd.css";
+import GlobalStyle from "./components/GlobalStyles";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "react-phone-input-2/lib/style.css";
-import "antd/dist/antd.css";
 import "swiper/css";
-import GlobalStyle from "./components/GlobalStyles";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -8,7 +8,6 @@ import "./Menu.scss";
 import { v4 as uuidv4 } from "uuid";
 const ItemMenu = (params) => {
   const { item, items } = params;
-  console.log({ item, items });
   return (
     <div className="Item">
       <h3 className="Label">
@@ -27,13 +26,16 @@ const ItemMenu = (params) => {
                 </h4>
               </ul>
               <ul className="Element">
-                {item.children.map((child) => {
-                  return (
-                    <li key={uuidv4()}>
-                      <Link to={`/${child.slug}`}>{child.tenDanhMuc}</Link>
-                    </li>
-                  );
-                })}
+                {item.children.length > 0 &&
+                  item.children.map((child) => {
+                    return (
+                      <li key={uuidv4()}>
+                        <Link to={`/${child.info.slug.trim()}`}>
+                          {child.info.tenDanhMuc}
+                        </Link>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           );
