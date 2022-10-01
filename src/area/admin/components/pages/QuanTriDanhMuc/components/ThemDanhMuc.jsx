@@ -29,7 +29,7 @@ const ThemDanhMuc = () => {
     items: [],
   });
   const [catName, setCatName] = useState("");
-  // console.log({ Muc0 });
+  console.log({ Muc0 });
   // console.log({ Muc1 });
   // console.log({ catName });
   const Muc0Change = (e) => {
@@ -68,18 +68,25 @@ const ThemDanhMuc = () => {
         })
       );
     } else {
-      if (Muc1 != null) {
+      if (Muc1.parentId != null) {
         dispatch(
           DanhMucApiThunk.fetchCategoryAdd({
             TenDanhMuc: catName,
             ParentCategoryID: Muc1.parentId,
           })
         );
-      } else {
+      } else if (Muc1.parentId == null) {
         dispatch(
           DanhMucApiThunk.fetchCategoryAdd({
             TenDanhMuc: catName,
             ParentCategoryID: Muc0.parentId,
+          })
+        );
+      } else {
+        dispatch(
+          DanhMucApiThunk.fetchCategoryAdd({
+            TenDanhMuc: catName,
+            ParentCategoryID: Muc1.parentId,
           })
         );
       }

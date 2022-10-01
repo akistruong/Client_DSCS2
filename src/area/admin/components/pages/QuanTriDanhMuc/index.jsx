@@ -61,6 +61,7 @@ const QuanTriDanhMuc = () => {
   useEffect(() => {
     dispatch(Api.fetchCategoryAll());
   }, []);
+
   return (
     <>
       <Button type="primary" onClick={() => setOpenModalAdd(true)}>
@@ -75,9 +76,16 @@ const QuanTriDanhMuc = () => {
         dataSource={items.menu}
         rowKey={uuidv4()}
       ></Table> */}
-      {items.menu?.map((item) => (
-        <ChildrenComponent value={item} />
-      ))}
+      {items.menu?.map(
+        (item) => (
+          console.log({ item }),
+          (
+            <div>
+              <ChildrenComponent value={item} />
+            </div>
+          )
+        )
+      )}
       <Modal visible={openModalAdd} onCancel={() => setOpenModalAdd(false)}>
         <ThemDanhMuc />
       </Modal>

@@ -4,7 +4,7 @@ import "./CardProduct.scss";
 import { Link } from "react-router-dom";
 const CardProduct = ({ value = {} }) => {
   console.log({ value });
-  const { maSanPham, tenSanPham, giaBanDisplay, boSuuTap, slug } = value;
+  const { maSanPham, tenSanPham, giaBanDisplay, boSuuTap, slug, img } = value;
   return (
     <Card>
       <Link
@@ -14,7 +14,8 @@ const CardProduct = ({ value = {} }) => {
         <div className="imgGroup">
           <img
             src={
-              "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/8020d7fee088442d8da2ae2801123818_9366/Giay_Stan_Smith_Pride_trang_GX6394_01_standard.jpg"
+              // "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/8020d7fee088442d8da2ae2801123818_9366/Giay_Stan_Smith_Pride_trang_GX6394_01_standard.jpg"
+              `https://localhost:44328/wwwroot/res/SanPhamRes/Thumb/${img}`
             }
           />
           <div className="price">{giaBanDisplay || "9 999 999 đ"}</div>

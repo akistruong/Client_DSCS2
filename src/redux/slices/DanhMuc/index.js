@@ -24,7 +24,9 @@ export const fetchCategoryDelete = createAsyncThunk(
 export const fetchCategoryUpdate = createAsyncThunk(
   "DanhMuc/fetchCategoryUpdate",
   async (params) => {
-    const res = await request.UpdateCategory(params.id, params.body);
+    const { id, body } = params;
+    console.log({ id, body });
+    const res = await request.UpdateCategory(id, body);
     return res;
   }
 );
