@@ -5,47 +5,43 @@ import { v4 as uuidv4 } from "uuid";
 import KichCoSlice, {
   checkedSize,
   fetchALLSize,
+  fillSizes,
 } from "~/redux/slices/KichCoSlice";
+import SanPhamSlice, { sizeSelected } from "~/redux/slices/SanPham";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
-const SizeRadio = ({ label, value, checked = false, onChange }) => {
+const SizeRadio = ({ label, value, onChange }) => {
+  const { product } = useSelector((state) => state.SanPham);
   const dispatch = useDispatch();
-  const { sizes, sizeChecked } = useSelector((state) => state.KichCo);
   return (
     <div className="SizeRadio">
       <input
         id={value}
         type={"radio"}
         name={"checkboxGroup"}
-        defaultValue={value}
-        defaultChecked={sizeChecked == value ? true : false}
-        onChange={onChange}
+        value={value}
+        onChange={() => dispatch(sizeSelected(value))}
+        checked={product.sizeSelected == value ? true : false}
       />
       <label htmlFor={value}>{label || 35}</label>
     </div>
   );
 };
-const SizeSelect = ({ setSize }) => {
-  const dispatch = useDispatch();
-  const { sizes } = useSelector((state) => state.KichCo);
-  console.log({ sizes });
-  useEffect(() => {
-    dispatch(fetchALLSize());
-  }, []);
-
+const SizeSelect = ({ items, setSize }) => {
+  const change = (e) => {
+    console.log({ test: e.target.value });
+  };
   return (
     <Row gutter={10}>
-      {sizes?.map((item) => {
+      {items.sizeDetails?.map((item) => {
+        {
+          console.log({ item });
+        }
         return (
           <Col key={uuidv4()} span={6}>
             {" "}
-            <SizeRadio
-              label={item.label}
-              value={item.value}
-              checked={item.checked || false}
-              onChange={(e) => dispatch(checkedSize(e.target.value))}
-            />
+            <SizeRadio label={item.sizeLabel} value={item.idSize} />
           </Col>
         );
       })}

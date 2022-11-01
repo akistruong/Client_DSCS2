@@ -22,56 +22,55 @@ import GioHangSlice, {
   ViewCart,
   AddToCart,
 } from "~/redux/slices/GioHang/GioHangSlice";
+import KichCoSlice, {
+  checkedSize,
+  fetchALLSize,
+  fillSizes,
+} from "~/redux/slices/KichCoSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "~/const";
 import ReactHtmlParser from "react-html-parser";
+import ColorComponent from "./components/ColorComponent";
 import { v4 as uuidv4 } from "uuid";
 const { Panel } = Collapse;
 const TrangChiTietSanPham = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const dispatch = useDispatch();
   const { product } = useSelector((state) => state.SanPham);
-  const { sizes, sizeChecked } = useSelector((state) => state.KichCo);
   const { id } = useParams();
-  console.log({ sizeChecked });
+  console.log({ product });
   useEffect(() => {
     dispatch(Api.fetchGetProduct({ id }));
   }, []);
   const handleAddToCart = () => {
     let CartItem = { ...product };
     CartItem.qty = 1;
-    CartItem.size = Number(sizeChecked);
+    CartItem.color = product.colorSelected;
+    CartItem.size = product.sizeSelected;
+    console.log({ color: CartItem.color, size: CartItem.size });
     dispatch(AddToCart(CartItem));
   };
   return (
     <div className="ProductDetail">
-      <Breadcrumb>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <a href="">Application Center</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <a href="">Application List</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>An Application</Breadcrumb.Item>
-      </Breadcrumb>
       <Row>
         <Col className="ProductDsc" xs={{ span: 24 }} xl={{ span: 18 }}>
           <Row>
             <Col className="ProductDscPC" xs={{ span: 0 }} xl={{ span: 24 }}>
               <div className="ImgContainer">
-                {product?.hinhAnh?.map((item) => {
-                  return (
-                    <Image
-                      key={uuidv4()}
-                      src={`${BASE_URL}wwwroot/res/SanPhamRes/Imgs/${product?.maSanPham.trim()}/${
-                        item.value
-                      }`}
-                      preview
-                    />
-                  );
-                })}
+                {product.hinhAnhDisplay &&
+                  product.hinhAnhDisplay[0]?.hinhAnhInfo?.map((item) => {
+                    return (
+                      <Image
+                        key={uuidv4()}
+                        // src={`${BASE_URL}wwwroot/res/SanPhamRes/Imgs/${product?.maSanPham.trim()}/${
+                        //   item.value
+                        // }`}
+                        src={item.url}
+                        preview
+                      />
+                    );
+                  })}
               </div>
             </Col>
             <Col
@@ -124,8 +123,17 @@ const TrangChiTietSanPham = () => {
             </h2>
             <span>
               <h3>Kích cỡ</h3>
+              <SizeSelect
+                items={
+                  product?.sizeDisplay?.length > 0 ? product.sizeDisplay[0] : []
+                }
+              />
             </span>
-            <SizeSelect items={sizes} />
+            <span>
+              <h3>Màu sắc</h3>
+              <ColorComponent items={product?.chiTietSoLuong}></ColorComponent>
+            </span>
+
             <button className="AddToCart" onClick={handleAddToCart}>
               <strong>THÊM VÀO GIỎ HÀNG</strong>
               <ArrowRightOutlined />

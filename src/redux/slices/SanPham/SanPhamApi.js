@@ -56,3 +56,16 @@ export const GetAllLatestProducts = async () => {
     throw err;
   }
 };
+
+export const Uploads = async (MaSP, MaMau, body, config) => {
+  try {
+    const res = await Method.Post(
+      `/api/admin/SanPham/Upload-Mutiple/${MaSP}/${MaMau}`,
+      body,
+      config
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

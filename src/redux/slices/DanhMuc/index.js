@@ -111,6 +111,7 @@ const DanhMucSlice = createSlice({
         type: "error",
       });
     });
+    //fetchCategoryUpdate
     builder.addCase(fetchCategoryUpdate.pending, (state, action) => {
       state.loading = true;
     });

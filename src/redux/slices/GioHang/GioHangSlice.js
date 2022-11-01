@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const cart = JSON.parse(localStorage.getItem("cart"));
 console.log({ cart });
 const initialState = {
+  item: {},
   cartItems: cart?.cartItems || [],
   totalPrice: cart?.totalPrice || 0,
   totalQty: cart?.totalQty || 0,
@@ -29,7 +30,8 @@ const GioHangSlice = createSlice({
         const cartItem = state.cartItems.find(
           (x) =>
             x.maSanPham == action.payload.maSanPham &&
-            x.size == action.payload.size
+            x.sizeSelected == action.payload.size &&
+            x.colorSelected == action.payload.color
         );
         if (cartItem) {
           var index = state.cartItems.indexOf(cartItem);

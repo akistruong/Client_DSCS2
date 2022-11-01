@@ -19,6 +19,9 @@ const KichCoSlice = createSlice({
       let temp = [...state.sizes];
       state.sizeChecked = action.payload;
     },
+    fillSizes: (state, action) => {
+      state.sizes = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchALLSize.fulfilled, (state, action) => {
@@ -26,5 +29,5 @@ const KichCoSlice = createSlice({
     });
   },
 });
-export const { checkedSize } = KichCoSlice.actions;
+export const { checkedSize, fillSizes } = KichCoSlice.actions;
 export default KichCoSlice;

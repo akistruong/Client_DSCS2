@@ -192,7 +192,7 @@ const CapNhatSanPham = ({
           </Select>
         </Form.Item>
         <Form.Item label="Tên danh mục" name="IdDM">
-          <CapNhatDanhMuc maSP={maSP} />
+          <CapNhatDanhMuc defaultValue={product.danhMuc} />
         </Form.Item>
         <Form.Item label="Ảnh Thumbnail" name="img">
           <UploadSingleFile
@@ -203,12 +203,7 @@ const CapNhatSanPham = ({
           />
         </Form.Item>
         <Form.Item label="Ảnh sản phẩm">
-          <UploadMutipleFile
-            maSP={maSP}
-            fileInit={mutipleFileInit}
-            setFileInit={setMutipleFileInit}
-            fieldValue={form.setFieldsValue}
-          />
+          <UploadMutipleFile res={product.mauSac} MaSP={maSP} />
         </Form.Item>
         <FormItem name={"Mota"} hidden></FormItem>
         <CKEditor

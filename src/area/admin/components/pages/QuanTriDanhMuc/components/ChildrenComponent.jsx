@@ -13,7 +13,6 @@ const ChildrenComponent = (props) => {
     id: null,
     parentCategoryID: null,
   });
-  console.log({ openEdit });
   const handleDeleteCategory = (id) => {
     distpatch(DanhMucApiThunk.fetchCategoryDelete(id));
   };

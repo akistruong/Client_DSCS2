@@ -25,6 +25,7 @@ const Item = ({
     btnXoa: false,
     btnThem: false,
   });
+  console.log({ init });
   const handleCancel = (_id) => {
     let obj = item.find((x) => x.virtualId == virtualId);
     let index = item.indexOf(obj);
@@ -131,9 +132,9 @@ const Item = ({
         ]}
       >
         <Select
-          value={init._idSize || size}
+          defaultValue={init?.sizeDetail?.sizeId || null}
           onChange={(e) => setSize(e)}
-          defaultValue={init._idSize || null}
+          // defaultValue={init._idSize || null}
           rules={[
             {
               required: true,
@@ -243,7 +244,6 @@ const QuanLySoLuong = ({ init = [], maSanPham }) => {
   const [item, setItem] = useState([]);
   const [sizesOptions, setSizesOptions] = useState([]);
   const [colorsOptions, setColorsOptions] = useState([]);
-  console.log({ item });
   useEffect(() => {
     const Fetch = async () => {
       const sizes = await Get("/api/Sizes");

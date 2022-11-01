@@ -72,6 +72,27 @@ export const fetchGetLatestProducts = createAsyncThunk(
 const SanPhamSlice = createSlice({
   initialState,
   name: "SanPham",
+  reducers: {
+    getImgs: (state, action) => {
+      const colorId = action.payload.trim();
+
+      console.log({ colorId });
+      let colors = [...state.product.mauSac];
+      let sizess = [...state.product.chiTietSoLuong];
+      let imgs = colors.filter((item) => item.idMaumau.trim() == colorId);
+      let sizes = sizess.filter((item) => item.idmau.trim() == colorId);
+      let sizeResult = sizes || [];
+      let imgResult = imgs || [];
+      console.log({ reducers: colors, sizess });
+      state.product.hinhAnhDisplay = imgResult;
+      state.product.sizeDisplay = sizeResult;
+      state.product.colorSelected = colorId;
+    },
+    sizeSelected: (state, action) => {
+      const size = action.payload;
+      state.product.sizeSelected = size;
+    },
+  },
   extraReducers: (builder) => {
     //fetchGetLatestProducts
     builder.addCase(fetchGetLatestProducts.pending, (state) => {
@@ -105,6 +126,20 @@ const SanPhamSlice = createSlice({
     builder.addCase(fetchGetProduct.pending, (state) => {});
     builder.addCase(fetchGetProduct.fulfilled, (state, action) => {
       state.product = action.payload;
+
+      state.product.colorSelected =
+        state.product.chiTietSoLuong[0].idmau.trim() || null;
+      const colorId = state.product.colorSelected;
+      console.log(colorId);
+      let colors = [...state.product.mauSac];
+      let sizess = [...state.product.chiTietSoLuong];
+      console.log({ colors, sizess });
+      let imgs = colors.filter((item) => item.idMaumau.trim() == colorId);
+      let sizes = sizess?.filter((item) => item.idmau?.trim() == colorId);
+      let sizeResult = sizes || [];
+      let imgResult = imgs || [];
+      state.product.hinhAnhDisplay = imgResult;
+      state.product.sizeDisplay = sizeResult;
     });
     //fetchPostProduct
     builder.addCase(fetchPostProduct.pending, (state) => {
@@ -156,5 +191,5 @@ const SanPhamSlice = createSlice({
     });
   },
 });
-
+export const { getImgs, sizeSelected } = SanPhamSlice.actions;
 export default SanPhamSlice;
