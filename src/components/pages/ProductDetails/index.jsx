@@ -11,17 +11,19 @@ import {
   Rate,
   Button,
   Breadcrumb,
+  notification,
 } from "antd";
 import { Pagination } from "swiper";
 import SizeSelect from "./components/SizeCompoent";
 import { useSelector, useDispatch } from "react-redux";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, CarOutlined,RollbackOutlined} from "@ant-design/icons";
 import * as Api from "~/redux/slices/SanPham";
 import * as ApiSize from "~/redux/slices/KichCoSlice";
 import GioHangSlice, {
   ViewCart,
   AddToCart,
 } from "~/redux/slices/GioHang/GioHangSlice";
+import MyCollapse from "~/components/commomComponents/Collapse";
 import KichCoSlice, {
   checkedSize,
   fetchALLSize,
@@ -44,19 +46,28 @@ const TrangChiTietSanPham = () => {
     dispatch(Api.fetchGetProduct({ id }));
   }, []);
   const handleAddToCart = () => {
+    if(product.sizeSelected)
+    {
     let CartItem = { ...product };
     CartItem.qty = 1;
     CartItem.color = product.colorSelected;
-    CartItem.size = product.sizeSelected;
+    CartItem.size = product.sizeSelected.idSize;
     console.log({ color: CartItem.color, size: CartItem.size });
     dispatch(AddToCart(CartItem));
+    }
+    else{
+      notification.open({
+        type:"error",
+        message:"Vui lòng chọn kích thước"
+      })
+    }
   };
   return (
     <div className="ProductDetail">
       <Row>
-        <Col className="ProductDsc" xs={{ span: 24 }} xl={{ span: 18 }}>
+        <Col className="ProductDsc" xs={{ span: 24 }} xl={{ span: 16 }}>
           <Row>
-            <Col className="ProductDscPC" xs={{ span: 0 }} xl={{ span: 24 }}>
+            <Col className="ProductDscPC" xs={{ span: 0 }} xl={{ span: 24 }} >
               <div className="ImgContainer">
                 {product.hinhAnhDisplay &&
                   product.hinhAnhDisplay[0]?.hinhAnhInfo?.map((item) => {
@@ -87,7 +98,8 @@ const TrangChiTietSanPham = () => {
                   return (
                     <SwiperSlide>
                       <Image
-                        src={`${BASE_URL}wwwroot/res/SanPhamRes/Imgs/${product?.maSanPham.trim()}/${
+                      style={{objectFit:"contain"}}
+                        src={`${BASE_URL}wwwroot/res/SanPhamRes/Imgs/${product?.maSanPham.trim()}/${product?.colorSelected}/${
                           item.value
                         }`}
                         preview
@@ -98,14 +110,20 @@ const TrangChiTietSanPham = () => {
               </Swiper>
             </Col>
           </Row>
-          <Collapse style={{ wordBreak: "break-all" }}>
+          {/* <Collapse style={{ wordBreak: "break-all" }}>
             <Panel header="Mô tả">{ReactHtmlParser(product?.mota)}</Panel>
-          </Collapse>
+          </Collapse> */}
+          <div className="PageContainer">
+          <MyCollapse label="Mô tả" >
+          {ReactHtmlParser(product?.mota)}
+          </MyCollapse>
+          </div>
+         
         </Col>
         {/* <Col xl={{ span: 0 }}></Col> */}
 
-        <Col span={24} xl={{ span: 6 }}>
-          <Space className="ProductInfo" direction="vertical">
+        <Col span={24} xl={{ span: 8 }} >
+          <Space className="ProductInfo" direction="vertical" >
             <Space className="InfoHeader">
               <div className="InforHeader_ClsName">
                 {product?.boSuuTap?.value || "Chưa thuộc bộ sưu tập nào"}
@@ -138,6 +156,8 @@ const TrangChiTietSanPham = () => {
               <strong>THÊM VÀO GIỎ HÀNG</strong>
               <ArrowRightOutlined />
             </button>
+            <a href=""><CarOutlined /> QUAY LẠI DỄ DÀNG</a>
+            <a href=""><RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết</a>
           </Space>
         </Col>
       </Row>

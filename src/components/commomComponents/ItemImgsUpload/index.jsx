@@ -9,7 +9,6 @@ const ItemUpload = (obj) => {
   const { fileList, MaSP, MaMau } = obj;
   const [imgs, setImgs] = useState([]);
   const [progress, setProgress] = useState(0);
-  console.log({ imgs });
   const uploadImage = async (options) => {
     const { onSuccess, onError, file, onProgress } = options;
     const fmData = new FormData();

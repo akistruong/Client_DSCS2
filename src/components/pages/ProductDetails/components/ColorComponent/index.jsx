@@ -27,7 +27,6 @@ const ColorComponent = ({ items, setSize }) => {
   const dispatch = useDispatch();
   return (
     <>
-      <form>
         <Row gutter={10}>
           {items &&
             items?.map((item) => {
@@ -45,7 +44,6 @@ const ColorComponent = ({ items, setSize }) => {
               );
             })}
         </Row>
-      </form>
     </>
   );
 };

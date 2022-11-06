@@ -5,6 +5,7 @@ import SanPhamSlice from "../slices/SanPham";
 import KichCoSlice from "../slices/KichCoSlice";
 import GioHangSlice from "../slices/GioHang/GioHangSlice";
 import XacThucSlice from "../slices/XacThuc";
+import GhnSlice from "../slices/GHNAPI/GhnSlice";
 export const store = configureStore({
   reducer: {
     DanhMuc: DanhMucSlice.reducer,
@@ -13,5 +14,6 @@ export const store = configureStore({
     KichCo: KichCoSlice.reducer,
     GioHang: GioHangSlice.reducer,
     XacThuc: XacThucSlice.reducer,
+    GiaoHangNhanh : GhnSlice.reducer,
   },
 });

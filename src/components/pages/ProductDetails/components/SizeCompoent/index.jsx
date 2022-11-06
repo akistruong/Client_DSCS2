@@ -21,8 +21,8 @@ const SizeRadio = ({ label, value, onChange }) => {
         type={"radio"}
         name={"checkboxGroup"}
         value={value}
-        onChange={() => dispatch(sizeSelected(value))}
-        checked={product.sizeSelected == value ? true : false}
+        onChange={() => dispatch(sizeSelected({size:value,color:product.colorSelected}))}
+        checked={product.sizeSelected?.idSize == value ? true : false}
       />
       <label htmlFor={value}>{label || 35}</label>
     </div>
@@ -33,7 +33,7 @@ const SizeSelect = ({ items, setSize }) => {
     console.log({ test: e.target.value });
   };
   return (
-    <Row gutter={10}>
+    <Row gutter={0}>
       {items.sizeDetails?.map((item) => {
         {
           console.log({ item });

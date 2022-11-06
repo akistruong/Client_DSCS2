@@ -10,7 +10,7 @@ const DefaultLayout = ({ children }) => {
         <HeaderMainHome />
       </Header>
       <Content>{children}</Content>
-      <Footer style={{ backgroundColor: "red", padding: "5rem" }}>
+      <Footer >
         <FooterMainHome />
       </Footer>
     </Layout>

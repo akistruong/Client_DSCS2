@@ -1,5 +1,5 @@
 @import 'normalize.css';
-@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap';
 
 $font_size_default:1.4rem;
 $line_height_default:1.8rem;
@@ -15,12 +15,13 @@ html
     user-select: none;
 }
 body{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: $font_size_default;
     line-height: $line_height_default;
     text-rendering: optimizeSpeed;
     box-sizing: border-box;
   }
+
 ul
 {
     list-style: none;
@@ -31,8 +32,6 @@ strong{
 button{
 border: none;  
 }
-a{
-}
 .headingPage{
   font-size: 3rem;
   font-weight: bolder;
@@ -41,8 +40,9 @@ a{
     background: black;
   }
 
-  [data-theme="dark"] .ant-layout-footer {
-    background: #00070c;
+  .ant-layout-footer {
+    background: black;
+    padding: 4rem;
   }
   .Header
   {
@@ -67,7 +67,8 @@ a{
   }
   .ant-layout-content
   {
-    min-height: 30vh;
+    background-color: #fff;
+    min-height: 50vh;
   }
   .table-row-light
   {
@@ -85,13 +86,6 @@ a{
 {
   border:1px solid #ffccc7;
   background-color: #fcaca5;
-}
-a{
-  color:#00070c;
-  &:hover{
-    color:rgb(144, 136, 136);
-    
-  }
 }
 .ant-checkbox-group-item
 {
@@ -147,4 +141,19 @@ $desktop-width: 1200px;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.PageContainer{
+  padding: 0 5rem;
+  @include tablet{
+    padding: 0 1rem;
+  }
+  @include mobile(){
+    padding: unset;
+  }
+}
+a{
+  color:unset;
+  &:hover{
+    color:black;
+  }
 }

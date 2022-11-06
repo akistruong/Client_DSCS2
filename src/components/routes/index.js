@@ -15,7 +15,11 @@ const publicRoute = [
   },
   {
     path: "/gio-hang",
-    element: Elements.TrangChiTietSanPham,
+    element: Elements.CartPage,
+  },{
+    path: "/giao-hang",
+    element: Elements.DeliveryPage,
+
   },
   {
     path: "/dang-nhap",
@@ -34,7 +38,7 @@ const publicRoute = [
 ];
 const privateRoute = [
   {
-    path: "/me",
+    path: "/me/*",
     element: Elements.MePage,
   },
 ];

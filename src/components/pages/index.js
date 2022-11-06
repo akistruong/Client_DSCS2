@@ -5,6 +5,8 @@ import GuessRegisterForm from "../commomComponents/GuessRegister";
 import PhoneOTP from "../commomComponents/PhoneOTP";
 import AuthPage from "./Auth";
 import MePage from "./Me";
+import CartPage from "./Cart";
+import DeliveryPage from "./Delivery";
 export {
   Home,
   TrangChiTietSanPham,
@@ -13,4 +15,6 @@ export {
   PhoneOTP,
   AuthPage,
   MePage,
+  CartPage,
+  DeliveryPage
 };

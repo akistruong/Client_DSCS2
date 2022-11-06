@@ -3,7 +3,8 @@ import { notification } from "antd";
 import * as Api from "./SanPhamApi";
 const initialState = {
   products: [],
-  product: {},
+  product: {
+  },
   loading: {
     btnLoading: false,
     tableLoading: false,
@@ -79,6 +80,7 @@ const SanPhamSlice = createSlice({
       console.log({ colorId });
       let colors = [...state.product.mauSac];
       let sizess = [...state.product.chiTietSoLuong];
+      console.log({colors})
       let imgs = colors.filter((item) => item.idMaumau.trim() == colorId);
       let sizes = sizess.filter((item) => item.idmau.trim() == colorId);
       let sizeResult = sizes || [];
@@ -87,9 +89,15 @@ const SanPhamSlice = createSlice({
       state.product.hinhAnhDisplay = imgResult;
       state.product.sizeDisplay = sizeResult;
       state.product.colorSelected = colorId;
+      state.product.sizeSelected = null;
     },
     sizeSelected: (state, action) => {
-      const size = action.payload;
+      const sizeSelected = action.payload.size;
+      const colorSelected = action.payload.color;
+      console.log({sizeSelected})
+      let ctsl =current(state.product.chiTietSoLuong);
+      let colors = ctsl.find(x=>x.idmau.trim() == colorSelected)
+      let size = colors.sizeDetails.find(x=>x.idSize == sizeSelected)
       state.product.sizeSelected = size;
     },
   },
@@ -128,12 +136,11 @@ const SanPhamSlice = createSlice({
       state.product = action.payload;
 
       state.product.colorSelected =
-        state.product.chiTietSoLuong[0].idmau.trim() || null;
+        state.product?.chiTietSoLuong[0]?.idmau.trim() || null;
       const colorId = state.product.colorSelected;
       console.log(colorId);
       let colors = [...state.product.mauSac];
       let sizess = [...state.product.chiTietSoLuong];
-      console.log({ colors, sizess });
       let imgs = colors.filter((item) => item.idMaumau.trim() == colorId);
       let sizes = sizess?.filter((item) => item.idmau?.trim() == colorId);
       let sizeResult = sizes || [];

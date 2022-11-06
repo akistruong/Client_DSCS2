@@ -61,6 +61,7 @@ function App() {
                 element={
                   <Layout>
                     <Page />
+
                   </Layout>
                 }
                 path={route.path}
